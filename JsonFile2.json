@@ -1,0 +1,15 @@
+{
+  "cols": [
+    {"id":"","label":"Tropheys","pattern":"","type":"string"},
+    {"id":"","pattern":"","type":"number"}
+  ],
+  "rows": [
+    {"c":[{"v":"Psg","f":null},{"v":7,"f":null}]},
+    {"c":[{"v":"Man U ","f":null},{"v":6,"f":null}]},
+    {"c":[{"v":"Man C","f":null},{"v":3,"f":null}]},
+    {"c":[{"v":"Arsenal","f":null},{"v":1,"f":null}]},
+    {"c":[{"v":"Chelsea","f":null},{"v":1,"f":null}]},
+    {"c":[{"v":"Tottenham","f":null},{"v":1,"f":null}]},
+    {"c":[{"v":"Real M","f":null},{"v":2,"f":null}]}
+  ]
+}

@@ -41,23 +41,18 @@ function drawCDashBoardJson() {
     };
     chart3.draw(data,options);
 
+    var chart4 = new google.visualization.PieChart(document.getElementById('chart_div5'));
+    chart4.draw(data, {width: 500, height: 240});
+    // Instantiate and draw our chart, passing in some options.
+    var chart5 = new google.visualization.BarChart(document.getElementById('chart_div6'));
+    chart5.draw(data, {width: 500, height: 240});
+    var chart6 = new google.visualization.AreaChart(document.getElementById('chart_div7'));
+    chart6.draw(data, {width: 500, height: 240});
+    var chart7 = new google.visualization.PieChart(document.getElementById('chart_div8'));
+    var options = {
+        pieHole: 0.2,
+    };
+    chart7.draw(data,options);
+
 }
 
-//function that reads the name of a file that has been imported on the webpage
-function CsvtoJson()
-{
-    //finds out the full path name, usually giving //fackpath//something
-    //which is not usefull
-    var fullPath = document.getElementById('fileName').value;
-    //if something was atcully imported
-    if (fullPath) {
-        //removes back slashes from the pathway to give back just the last filename, usually something like JsonFile2.Json
-        var startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
-        var filename = fullPath.substring(startIndex);
-        if (filename.indexOf('\\') === 0 || filename.indexOf('/') === 0) {
-            filename = filename.substring(1);
-        }
-        //pops up in browser for testing purposes
-        alert(filename);
-    }
-}

@@ -115,7 +115,7 @@
     <!--Divs that will hold each control and chart-->
     <form action="getData.php" method="POST">
         Select a file: <input type="file" name="fileName" id="fileName">
-                       <button id="btn" type="button" class="btn btn-primary">Confirm</button>
+                       <button id="btn" type="button" class="btn btn-primary" onclick="CsvtoJson()">Confirm</button>
     </form>
 
     <table class="columns">
@@ -139,8 +139,13 @@
             <td><div id="chart_div5"></div></td>
             <td><div id="chart_div6"></div></td>
             <td><div id="chart_div7"></div></td>
+            <td><div id="chart_div8"></div></td>
         </tr>
     </table>
+</div>
+
+<div id="data">
+
 </div>
 </body>
 </html>

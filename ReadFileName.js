@@ -10,7 +10,9 @@ function CsvtoJson()
 {
     //finds out the full path name, usually giving //fackpath//something
     //which is not usefull
+
     var fullPath = document.getElementById('fileName').value;
+    var xhttp;
     //if something was atcully imported
     if (fullPath) {
         //removes back slashes from the pathway to give back just the last filename, usually something like JsonFile2.Json
@@ -21,6 +23,19 @@ function CsvtoJson()
         }
         //pops up in browser for testing purposes
         alert(filename);
+        console.log(filename);
+
+
+
+
+        xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                document.getElementById("data").innerHTML = this.responseText;
+            }
+        };
+        xhttp.open("GET", "getData.php?q="+filename, true);
+        xhttp.send();
     }
 
 }

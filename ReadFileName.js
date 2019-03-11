@@ -1,5 +1,11 @@
 
 //function that reads the name of a file that has been imported on the webpage
+$(document).ready(function() {
+    $("#btn").on("click", function() {
+        CsvtoJson();
+    });
+});
+
 function CsvtoJson()
 {
     //finds out the full path name, usually giving //fackpath//something
@@ -16,4 +22,5 @@ function CsvtoJson()
         //pops up in browser for testing purposes
         alert(filename);
     }
+
 }

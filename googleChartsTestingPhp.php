@@ -90,7 +90,6 @@
     <script src="ReadFileName.js"></script>
 
 
-
 </head>
 <body>
 
@@ -115,9 +114,10 @@
 <div id="dashboard_div">
     <!--Divs that will hold each control and chart-->
     <form action="getData.php" method="POST">
-        Select a file: <input type="file" name="myFile" id="fileName" onclick="CsvtoJson()">
-        Confirm: <input type="submit">
+        Select a file: <input type="file" name="myFile" id="fileName">
+                       <button id="btn" type="button" class="btn btn-primary" >Confirm</button>
     </form>
+
     <table class="columns">
         <tr>
             <td><div id="filter_div"></div></td>
@@ -141,12 +141,6 @@
             <td><div id="chart_div7"></div></td>
         </tr>
     </table>
-</div>
-
-<div id="PhpJsonText" style="color:blue;margin-left:30px;visibility: hidden">
-    <div id="JsonFile">
-        <?php require_once("getData.php")?>
-    </div>
 </div>
 </body>
 </html>

@@ -114,8 +114,8 @@
 <div id="dashboard_div">
     <!--Divs that will hold each control and chart-->
     <form action="getData.php" method="POST">
-        Select a file: <input type="file" name="myFile" id="fileName">
-                       <button id="btn" type="button" class="btn btn-primary" >Confirm</button>
+        Select a file: <input type="file" name="fileName" id="fileName">
+                       <button id="btn" type="button" class="btn btn-primary">Confirm</button>
     </form>
 
     <table class="columns">

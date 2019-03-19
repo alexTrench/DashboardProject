@@ -1,16 +1,19 @@
 <?php
-$filename = isset($array['q']) ? $array['q'] : '';
-$filename = $_REQUEST['q'];
-if($filename !== "")
+
+if(! empty($_REQUEST['filename']))
 {
-    $string = file_get_contents("$filename");
+    $filename = $_REQUEST['filename'];
+    //echo $filename;
+    $filename = trim($filename,"'");
+    $string = file_get_contents($filename);
     echo $string;
+
 }
 else{
-    // It reads a json formatted text file and outputs it.
-    $string = file_get_contents("sampleData.json");
-    echo $string;
-}
 
+    $string = file_get_contents('JsonFile2.json');
+    echo $string;
+
+}
 
 ?>

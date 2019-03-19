@@ -114,8 +114,8 @@
 <div id="dashboard_div">
     <!--Divs that will hold each control and chart-->
     <form action="getData.php" method="POST">
-        Select a file: <input type="file" name="fileName" id="fileName">
-                       <button id="btn" type="button" class="btn btn-primary" onclick="CsvtoJson()">Confirm</button>
+        Select a file: <input type="file" name="fileName" id="fileName" >
+        <button id="btn" type="button" class="btn btn-primary" onclick="CsvtoJson()">Confirm</button>
     </form>
 
     <table class="columns">

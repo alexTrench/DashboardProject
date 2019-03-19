@@ -6,13 +6,11 @@ $(document).ready(function() {
     });
 });
 
+
 function CsvtoJson()
 {
-    //finds out the full path name, usually giving //fackpath//something
-    //which is not usefull
 
     var fullPath = document.getElementById('fileName').value;
-    var xhttp;
     //if something was atcully imported
     if (fullPath) {
         //removes back slashes from the pathway to give back just the last filename, usually something like JsonFile2.Json
@@ -25,17 +23,17 @@ function CsvtoJson()
         alert(filename);
         console.log(filename);
 
-
-
-
-        xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function() {
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
                 document.getElementById("data").innerHTML = this.responseText;
             }
         };
-        xhttp.open("GET", "getData.php?q="+filename, true);
-        xhttp.send();
+        xmlhttp.open("GET", "getData.php?filename=" + filename, true);
+        xmlhttp.send();
     }
+
+
+
 
 }

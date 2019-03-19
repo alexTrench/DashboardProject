@@ -10,19 +10,21 @@ $(document).ready(function() {
     });
 });
 
-
 function drawCDashBoardJson() {
 
     var jsonData = $.ajax({
-            url: "getData.php",
-            dataType: "json",
-            async: false
-        }).responseText;
+        url: 'getData.php',
+        dataType: 'json',
+        async: false
+    }).responseText;
 
 
+    var datatext = document.getElementById("data").textContent;
+
+    console.log(datatext);
     // Create our data table out of JSON data loaded from server.
     if(jsonData !== null) {
-        var data = new google.visualization.DataTable(jsonData);
+        var data = new google.visualization.DataTable(datatext);
     }else{
         alert("No datatable");
     }

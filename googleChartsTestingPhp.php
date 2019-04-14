@@ -101,8 +101,8 @@
 
         <nav>
             <ul>
-                <li><a href="#">Dashboard</a></li>
-                <li><a href="#">Compare</a></li>
+                <li><a href="googleChartsTestingPhp.php">Dashboard</a></li>
+                <li><a href="googleChartsCsv.php">Csv</a></li>
                 <li><a href="#">History</a></li>
 
             </ul>
@@ -115,7 +115,8 @@
     <!--Divs that will hold each control and chart-->
     <form action="getData.php" method="POST">
         Select a file: <input type="file" name="fileName" id="fileName" >
-        <button id="btn" type="button" class="btn btn-primary" onclick="CsvtoJson()">Confirm</button>
+        <button id="btn" type="button" class="btn btn-primary" onclick="ReadFileName()">Submit File</button>
+        <button id="btn2" type="button" class="btn btn-primary">Generate Charts</button>
     </form>
 
     <table class="columns">
@@ -144,7 +145,7 @@
     </table>
 </div>
 
-<div id="data">
+<div id="data" style="visibility: collapse;">
 
 </div>
 </body>

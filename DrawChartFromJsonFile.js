@@ -5,7 +5,7 @@ google.charts.load('current', {'packages':['corechart', 'controls']});
 //google.charts.setOnLoadCallback(drawCDashBoardJson);
 
 $(document).ready(function() {
-    $("#btn").on("click", function() {
+    $("#btn2").on("click", function() {
         drawCDashBoardJson();
     });
 });

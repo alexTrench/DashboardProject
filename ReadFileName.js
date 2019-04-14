@@ -1,13 +1,6 @@
 
 //function that reads the name of a file that has been imported on the webpage
-$(document).ready(function() {
-    $("#btn").on("click", function() {
-        CsvtoJson();
-    });
-});
-
-
-function CsvtoJson()
+function ReadFileName()
 {
 
     var fullPath = document.getElementById('fileName').value;
@@ -20,7 +13,7 @@ function CsvtoJson()
             filename = filename.substring(1);
         }
         //pops up in browser for testing purposes
-        alert(filename);
+        alert(filename + " Submitted");
         console.log(filename);
 
         var xmlhttp = new XMLHttpRequest();

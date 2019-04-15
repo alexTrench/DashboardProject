@@ -2,27 +2,7 @@
 // Set a callback to run when the Google Visualization API is loaded.
 //google.charts.setOnLoadCallback(drawCDashBoardJson);
 
-$(document).ready(function() {
-    $("#btn4").on("click", function() {
-        drawCsvCharts();
-    });
-});
-
-
-function drawCsvCharts()
-{
-
-    var datatext = document.getElementById("csvData").textContent;
-    datatext = datatext.json.parse();
-    console.log(datatext);
-
-}
-
-
 function ConstructJsonObject(){
-
-    alert("clicked event");
-
 
     var myRows = {myRows: []};
 
@@ -34,8 +14,6 @@ function ConstructJsonObject(){
         });
         myRows.myRows.push(obj);
     });
-    //alert(JSON.stringify(myRows));
-
 
     let jsonObject = (JSON.stringify(myRows));
     let JsonParsed = JSON.parse(jsonObject);
@@ -55,22 +33,30 @@ google.charts.load('current', {'packages':['corechart', 'controls', ['line']]});
 function drawHumidityCharts(JsonObject){
 
     let data = new google.visualization.DataTable();
+    let SensorId;
     data.addColumn('string', 'heading');
     data.addColumn('number', 'Humidity');
     for(let r = 0; r < JsonObject.myRows.length; r++)
     {
+        if(SensorId === undefined) {
+            SensorId = JsonObject.myRows[r]["Sensor ID"];
+        }
+
         if(JsonObject.myRows[r]["Type Of data Stored"] === "humidity") {
             let numericalData = JsonObject.myRows[r]["Data Value"];
-            let stringHeading = JsonObject.myRows[r]["Type Of data Stored"];
+            let stringHeading = JsonObject.myRows[r]["Sensor ID"];
             numericalData = parseInt(numericalData);
-            data.addRow([stringHeading, numericalData]);
+            let PropertyID = organiseProperties(SensorId);
+            data.addRow([PropertyID, numericalData]);
+        }else{
+            SensorId = JsonObject.myRows[r]["Sensor ID"].substr(1, JsonObject.myRows[r]["Sensor ID"].length);
         }
     }
 
     // Set chart options
     let options = {'title':'Humidity',
-        'width':500,
-        'height':600};
+        'width':800,
+        'height':2000};
 
     // Instantiate and draw our chart, passing in some options.
     let chart = new google.visualization.BarChart(document.getElementById('chart_div1'));
@@ -80,26 +66,38 @@ function drawHumidityCharts(JsonObject){
 function drawLightCharts(JsonObject){
 
     let data = new google.visualization.DataTable();
+    let SensorId;
     data.addColumn('string', 'heading');
     data.addColumn('number', 'Light');
     for(let r = 0; r < JsonObject.myRows.length; r++)
     {
+
+        if(SensorId === undefined) {
+            SensorId = JsonObject.myRows[r]["Sensor ID"];
+        }
+
+
         if(JsonObject.myRows[r]["Type Of data Stored"] === "light") {
             let numericalData = JsonObject.myRows[r]["Data Value"];
-            let stringHeading = JsonObject.myRows[r]["Type Of data Stored"];
+            let stringHeading = JsonObject.myRows[r]["Sensor ID"];
+            let PropertyID = organiseProperties(SensorId);
             numericalData = parseInt(numericalData);
-            data.addRow([stringHeading, numericalData]);
+            data.addRow([PropertyID, numericalData]);
+        }else{
+            SensorId = JsonObject.myRows[r]["Sensor ID"].substr(1, JsonObject.myRows[r]["Sensor ID"].length);
         }
     }
 
     // Set chart options
     let options = {'title':'Light',
-        'width':400,
-        'height':600};
+        'width':800,
+        'height':2000};
 
     // Instantiate and draw our chart, passing in some options.
     let chart = new google.visualization.BarChart(document.getElementById('chart_div2'));
-    chart.draw(data, options);
+    if(data !== null) {
+        chart.draw(data, options);
+    }
 
 }
 
@@ -107,7 +105,7 @@ function drawHeatingCharts(JsonObject){
 
     let data = new google.visualization.DataTable();
     let SensorId;
-    let NumberOfSensorsCycled = 0;
+    //let NumberOfSensorsCycled = 0;
     let TotalTemp = 0;
     data.addColumn('string', 'heading');
     data.addColumn('number', 'Heating');
@@ -123,27 +121,25 @@ function drawHeatingCharts(JsonObject){
 
             if (JsonObject.myRows[r]["Type Of data Stored"] === "tempHeating") {
                 let numericalData = JsonObject.myRows[r]["Data Value"];
-                let stringHeading = JsonObject.myRows[r]["Type Of data Stored"];
+                //let stringHeading = JsonObject.myRows[r]["Type Of data Stored"];
                 numericalData = parseInt(numericalData);
                 TotalTemp = TotalTemp + parseInt(numericalData);
-                data.addRow([stringHeading, numericalData]);
+                data.addRow([SensorId, numericalData]);
             }
         }else{
-            NumberOfSensorsCycled = NumberOfSensorsCycled + 1;
-            console.log(NumberOfSensorsCycled);
-            console.log(TotalTemp);
+            //NumberOfSensorsCycled = NumberOfSensorsCycled + 1;
+            //console.log(NumberOfSensorsCycled);
+            //console.log(TotalTemp);
             SensorId = JsonObject.myRows[r]["Sensor ID"];
         }
 
 
     }
 
-
-
     // Set chart options
     let options = {'title':'Temperature',
-        'width':400,
-        'height':1000};
+        'width':800,
+        'height':2000};
 
     // Instantiate and draw our chart, passing in some options.
     let chart = new google.visualization.BarChart(document.getElementById('chart_div3'));
@@ -154,36 +150,36 @@ function drawHeatingCharts(JsonObject){
 function drawPowerUsedCharts(JsonObject){
 
     let data = new google.visualization.DataTable();
+    let SensorId;
     data.addColumn('string', 'heading');
     data.addColumn('number', 'power Used');
-    for(let r = 0; r < JsonObject.myRows.length; r++)
-    {
+    for(let r = 0; r < JsonObject.myRows.length; r++) {
+
+        if(SensorId === undefined) {
+            SensorId = JsonObject.myRows[r]["Sensor ID"];
+        }
+
         if(JsonObject.myRows[r]["Type Of data Stored"] === "powerOverall") {
             let numericalData = JsonObject.myRows[r]["Data Value"];
-            let stringHeading = JsonObject.myRows[r]["Type Of data Stored"];
+            let stringHeading = JsonObject.myRows[r]["Sensor ID"];
+            let date = JsonObject.myRows[r]["Date and Time"];
             numericalData = parseInt(numericalData);
-            data.addRow([stringHeading, numericalData]);
+            data.addRow([stringHeading + " " + date, numericalData]);
+        }else{
+            SensorId = JsonObject.myRows[r]["Sensor ID"];
         }
     }
 
     // Set chart options
     let options = {'title':'Power Used',
-        'width':400,
-        'height':1000};
+        'width':800,
+        'height':2000};
 
     // Instantiate and draw our chart, passing in some options.
     let chart = new google.visualization.BarChart(document.getElementById('chart_div4'));
     chart.draw(data, options);
 
 }
-
-function createPropertyTable(JsonObject){
-
-
-
-
-}
-
 
 function drawLineChart(JsonObject){
 
@@ -194,44 +190,56 @@ function drawLineChart(JsonObject){
     //local variable needed, data and temperature for this chart
     let FulldataAndTime;
     let TemptOverTime;
-
+    let SensorId;
     for(let r = 0; r < JsonObject.myRows.length; r++)
     {
+
         //get heating data
         if(JsonObject.myRows[r]["Type Of data Stored"] === "tempHeating") {
-            //gets the date
-            FulldataAndTime = JsonObject.myRows[r]["Date and Time"];
-            //the data is stored as a rather strange string, with seconds included however never used
-            //so this cuts that useless part out so it looks nicer on the chart
-            FulldataAndTime = FulldataAndTime.substring(0, 19);
-
-            //GOOGLE CHARTS HAS ITS OWN WAY OF HANDLING DATES
-            //but for this to work they need to be numbers not the string form of numbers that csv returns
-            //so this section will reformat these data to google charts likening
-            let year = parseInt(FulldataAndTime.substring(0,4));
-            console.log(year);
-            //in google charts months are indexed from 0, so january is 0 instead of on in our data
-            //so the number should be month - 1 to be indexed from 0
-            let month = parseInt(FulldataAndTime.substring(5,7));
-            month = month - 1;
-            console.log(month);
-            //thse are all fine to use without any alreration apart from parsing them
-            let day = parseInt(FulldataAndTime.substring(8,10));
-            let hours = parseInt(FulldataAndTime.substring(11,13));
-            let minutes = parseInt(FulldataAndTime.substring(14,16));
-            let seconds = parseInt(FulldataAndTime.substring(17,19));
 
 
+            //so not to overright the sensor id every time it loops
+            if(SensorId === undefined) {
+                //this is a test to see if we can only get one sensor date back at a time, so not to mess up date and time axis
+                SensorId = JsonObject.myRows[r]["Sensor ID"];
+            }
+
+                //makes sure we are only getting the data from the right sensor
+                if(JsonObject.myRows[r]["Sensor ID"] === SensorId) {
+                    //gets the date
+                    FulldataAndTime = JsonObject.myRows[r]["Date and Time"];
+                    //the data is stored as a rather strange string, with seconds included however never used
+                    //so this cuts that useless part out so it looks nicer on the chart
+                    FulldataAndTime = FulldataAndTime.substring(0, 19);
+
+                    //GOOGLE CHARTS HAS ITS OWN WAY OF HANDLING DATES
+                    //but for this to work they need to be numbers not the string form of numbers that csv returns
+                    //so this section will reformat these data to google charts likening
+                    let year = parseInt(FulldataAndTime.substring(0, 4));
+                    //console.log(year);
+                    //in google charts months are indexed from 0, so january is 0 instead of on in our data
+                    //so the number should be month - 1 to be indexed from 0
+                    let month = parseInt(FulldataAndTime.substring(5, 7));
+                    month = month - 1;
+                    //console.log(month);
+                    //thse are all fine to use without any alreration apart from parsing them
+                    let day = parseInt(FulldataAndTime.substring(8, 10));
+                    let hours = parseInt(FulldataAndTime.substring(11, 13));
+                    let minutes = parseInt(FulldataAndTime.substring(14, 16));
+                    let seconds = parseInt(FulldataAndTime.substring(17, 19));
 
 
+                    //get temperature
+                    TemptOverTime = JsonObject.myRows[r]["Data Value"];
+                    //change the string that the csv value get to the correct int value
+                    //so that the graph can organise itself dynamically
+                    TemptOverTime = parseInt(TemptOverTime);
 
-            //get temperature
-            TemptOverTime = JsonObject.myRows[r]["Data Value"];
-            //change the string that the csv value get to the correct int value
-            //so that the graph can organise itself dynamically
-            TemptOverTime = parseInt(TemptOverTime);
+                    data.addRow([new Date(year, month, day, hours, minutes, seconds, 0), TemptOverTime]);
+            }
+        }else{
+            //SensorId = JsonObject.myRows[r]["Sensor ID"];
 
-            data.addRow([new Date(year,month,day,hours,minutes,seconds, 0),TemptOverTime]);
         }
 
     }
@@ -240,15 +248,13 @@ function drawLineChart(JsonObject){
     let options = {
         chart: {
             title: 'Temperature over time in a houseHold',
-            subtitle: 'in Celsius'
+            subtitle: 'in Celsius',
+            vAxis: {minValue: 0}
         },
-        'width': 1300,
-        'height': 1000,
-        axes: {
-            x: {
-                0: {side: 'top'}
-            }
-        }
+        'width': 700,
+        'height': 600,
+
+
     };
 
     // Instantiate and draw our chart, passing in some options.
@@ -265,13 +271,13 @@ function drawHumidityOverTime(JsonObject){
     //local variable needed, data and temperature for this chart
     let FulldataAndTime;
     let humidityOverTime;
-
+    let SensorId;
     //sensor id
     let SensorID;
-    for(let r = 0; r < JsonObject.myRows.length; r++)
-    {
-        //get heating data
-        if(JsonObject.myRows[r]["Type Of data Stored"] === "humidity") {
+    for(let r = 0; r < JsonObject.myRows.length; r++) {
+
+            //get heating data
+            if(JsonObject.myRows[r]["Type Of data Stored"] === "humidity") {
 
             //so not to overright the sensor id every time it loops
             if(SensorID === undefined) {
@@ -300,22 +306,26 @@ function drawHumidityOverTime(JsonObject){
                 //but for this to work they need to be numbers not the string form of numbers that csv returns
                 //so this section will reformat these data to google charts likening
                 let year = parseInt(FulldataAndTime.substring(0, 4));
-                console.log(year);
+                //console.log(year);
                 //in google charts months are indexed from 0, so january is 0 instead of on in our data
                 //so the number should be month - 1 to be indexed from 0
                 let month = parseInt(FulldataAndTime.substring(5, 7));
                 month = month - 1;
-                console.log(month);
-                //thse are all fine to use without any alreration apart from parsing them
+                //console.log(month);
+                //these are all fine to use without any alreration apart from parsing them
                 let day = parseInt(FulldataAndTime.substring(8, 10));
                 let hours = parseInt(FulldataAndTime.substring(11, 13));
                 let minutes = parseInt(FulldataAndTime.substring(14, 16));
                 let seconds = parseInt(FulldataAndTime.substring(17, 19));
 
-
                 data.addRow([new Date(year, month, day, hours, minutes, seconds, 0), humidityOverTime]);
+            }else{
+
+            SensorId = JsonObject.myRows[r]["Sensor ID"];
+
             }
-        }
+
+            }
 
     }
 
@@ -325,11 +335,12 @@ function drawHumidityOverTime(JsonObject){
             title: 'Humidity in a houseHold over time',
             subtitle: ''
         },
-        width: 1300,
-        height: 1000,
+        width: 700,
+        height: 600,
         axes: {
             x: {
-                0: {side: 'top'}
+                0: {side: 'top'},
+                vAxis: {minValue: 0},
             },
             y: {
                     maxValue: 100,
@@ -341,4 +352,50 @@ function drawHumidityOverTime(JsonObject){
     // Instantiate and draw our chart, passing in some options.
     let chart = new google.charts.Line(document.getElementById('chart_div7'));
     chart.draw(data, options);
+}
+
+
+function organiseProperties(sensorString){
+
+
+    //each flat has multiple sensors, so to get the overall stats for the properites these sensors must all be
+    //processed at the same time
+    //some have a extra sensor depending on if the flat has two bedrooms or one
+    if(sensorString === "77DC2F7B" || sensorString === "77B977C4" || sensorString === "77C3BA1E"
+        || sensorString === "77F3A828" || sensorString === "77D90066"){
+        console.log("Flat 11");
+        return "Flat 11";
+    }
+    if(sensorString === "773BB32F" || sensorString === "77ED5B7A" || sensorString === "77C75411"
+        || sensorString === "770FAC31" || sensorString === "77DEA34E" || sensorString === "77871D68"){
+        console.log("Flat 21");
+        return "Flat 21";
+    }
+    if(sensorString === "77265819" || sensorString === "77DFC691" || sensorString === "77C230B9"
+        || sensorString === "7776F7A5" || sensorString === "77F00716"){
+        console.log("Flat 14");
+        return "Flat 14";
+    }
+    if(sensorString === "77D5C8CE" || sensorString === "77009DLE" || sensorString === "770B4EDD"
+        || sensorString === "77984608" || sensorString === "773A3190" || sensorString === "77311DF7"){
+        console.log("Flat 20");
+        return "Flat 20";
+    }
+    if(sensorString === "78596E4F" || sensorString === "78B70D36" || sensorString === "78A56E07"
+        || sensorString === "78F89003" || sensorString === "780780BE"){
+        console.log("Flat 35");
+        return "Flat 35";
+    }
+    if(sensorString === "78AEBB26" || sensorString === "783D3E26" || sensorString === "78D3A4D7"
+        || sensorString === "7877574A" || sensorString === "7840555F"){
+        console.log("Flat 37");
+        return "Flat 37";
+    }
+
+}
+
+function organiseBoilers(){
+
+
+
 }

@@ -128,8 +128,9 @@
             padding-left: 5%;
         }
         #jsonDataTable{
-            float: right;
-            width: 40%;
+            float: left;
+            display: inline-block;
+            width: 80%;
             padding-left: 2%;
             padding-right: 2%;
         }

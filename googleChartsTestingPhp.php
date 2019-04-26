@@ -75,6 +75,11 @@
     nav a:hover::before {
         width: 100%;
     }
+    #map {
+        height: 300px;  /* The height is 400 pixels */
+        width: 100%;  /* The width is the width of the web page */
+        padding-top: 30px;
+    }
 
 
 </style>
@@ -88,6 +93,11 @@
     <!--loads all of the graphs from other scripts-->
     <script src="DrawChartFromJsonFile.js"></script>
     <script src="ReadFileName.js"></script>
+    <script src="LiveDataCharts.js"></script>
+    <script src="GoogleMapsScripts.js"></script>
+    <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB7QZIIjZc7ol_NCUcPvPB9wSA-KzLrq7U&callback=initMap">
+    </script>
 
 
 </head>
@@ -110,38 +120,30 @@
     </div>
 </header>
 
+<!--Google Maps Div-->
+<div id="map"></div>
+
 <!--Div that will hold the dashboard-->
 <div id="dashboard_div">
     <!--Divs that will hold each control and chart-->
-    <form action="getData.php" method="POST">
-        Select a file: <input type="file" name="fileName" id="fileName" >
-        <button id="btn" type="button" class="btn btn-primary" onclick="ReadFileName()">Submit File</button>
-        <button id="btn2" type="button" class="btn btn-primary">Generate Charts</button>
-    </form>
-
     <table class="columns">
-        <tr>
-            <td><div id="filter_div"></div></td>
-            <td><div id="filter_div1"></div></td>
-            <td><div id="filter_div2"></div></td>
-        </tr>
-        <tr>
-            <td><div id="control_div"></div></td>
-            <td><div id="control_div1"></div></td>
-            <td><div id="control_div2"></div></td>
-        </tr>
         <tr>
             <td><div id="chart_div1"></div></td>
             <td><div id="chart_div2"></div></td>
             <td><div id="chart_div3"></div></td>
-            <td><div id="chart_div4"></div></td>
         </tr>
         <tr>
+            <td><div id="chart_div4"></div></td>
             <td><div id="chart_div5"></div></td>
             <td><div id="chart_div6"></div></td>
+        </tr>
+        <tr>
             <td><div id="chart_div7"></div></td>
             <td><div id="chart_div8"></div></td>
+            <td><div id="chart_div9"></div></td>
+
         </tr>
+
     </table>
 </div>
 

@@ -18,12 +18,18 @@ function ConstructJsonObject(){
     let jsonObject = (JSON.stringify(myRows));
     let JsonParsed = JSON.parse(jsonObject);
     console.log(JsonParsed);
+
+    //this will get all of the data for each flat and put the data in there own flat array
+    //to be accessed later by the draw chart functions that will loop through them and draw a chart
+    //based on the data
+    //organiseProperties(JsonParsed);
     drawHumidityCharts(JsonParsed);
     drawLightCharts(JsonParsed);
     drawHeatingCharts(JsonParsed);
     drawPowerUsedCharts(JsonParsed);
     drawLineChart(JsonParsed);
     drawHumidityOverTime(JsonParsed);
+    drawAverageTempPerFlat(JsonParsed);
 }
 
 
@@ -34,23 +40,25 @@ function drawHumidityCharts(JsonObject){
 
     let data = new google.visualization.DataTable();
     let SensorId;
+    let numericalData = 0;
+    let PropertyID = "";
     data.addColumn('string', 'heading');
     data.addColumn('number', 'Humidity');
     for(let r = 0; r < JsonObject.myRows.length; r++)
     {
         if(SensorId === undefined) {
             SensorId = JsonObject.myRows[r]["Sensor ID"];
+            PropertyID = organiseProperties(SensorId);
         }
+        if (JsonObject.myRows[r]["Type Of data Stored"] === "humidity") {
+                numericalData = JsonObject.myRows[r]["Data Value"];
+                numericalData = parseInt(numericalData);
+                PropertyID = organiseProperties(SensorId);
+                data.addRow([PropertyID, numericalData]);
 
-        if(JsonObject.myRows[r]["Type Of data Stored"] === "humidity") {
-            let numericalData = JsonObject.myRows[r]["Data Value"];
-            let stringHeading = JsonObject.myRows[r]["Sensor ID"];
-            numericalData = parseInt(numericalData);
-            let PropertyID = organiseProperties(SensorId);
-            data.addRow([PropertyID, numericalData]);
         }else{
-            SensorId = JsonObject.myRows[r]["Sensor ID"].substr(1, JsonObject.myRows[r]["Sensor ID"].length);
-        }
+            SensorId = JsonObject.myRows[r]["Sensor ID"]
+            }
     }
 
     // Set chart options
@@ -63,10 +71,15 @@ function drawHumidityCharts(JsonObject){
     chart.draw(data, options);
 }
 
+
+
+            /*<-- LIGHT INTAKE CHART -->*/
 function drawLightCharts(JsonObject){
 
     let data = new google.visualization.DataTable();
     let SensorId;
+    let PropertyID = "";
+    let numericalData;
     data.addColumn('string', 'heading');
     data.addColumn('number', 'Light');
     for(let r = 0; r < JsonObject.myRows.length; r++)
@@ -74,17 +87,17 @@ function drawLightCharts(JsonObject){
 
         if(SensorId === undefined) {
             SensorId = JsonObject.myRows[r]["Sensor ID"];
+            PropertyID = organiseProperties(SensorId);
         }
 
 
         if(JsonObject.myRows[r]["Type Of data Stored"] === "light") {
-            let numericalData = JsonObject.myRows[r]["Data Value"];
-            let stringHeading = JsonObject.myRows[r]["Sensor ID"];
-            let PropertyID = organiseProperties(SensorId);
+            numericalData = JsonObject.myRows[r]["Data Value"];
+            PropertyID = organiseProperties(SensorId);
             numericalData = parseInt(numericalData);
             data.addRow([PropertyID, numericalData]);
         }else{
-            SensorId = JsonObject.myRows[r]["Sensor ID"].substr(1, JsonObject.myRows[r]["Sensor ID"].length);
+            SensorId = JsonObject.myRows[r]["Sensor ID"];
         }
     }
 
@@ -101,12 +114,13 @@ function drawLightCharts(JsonObject){
 
 }
 
+                /*<-- TEMPERATURE CHART -->*/
 function drawHeatingCharts(JsonObject){
 
     let data = new google.visualization.DataTable();
     let SensorId;
-    //let NumberOfSensorsCycled = 0;
-    let TotalTemp = 0;
+    let PropertyID = "";
+
     data.addColumn('string', 'heading');
     data.addColumn('number', 'Heating');
     for(let r = 0; r < JsonObject.myRows.length; r++)
@@ -114,17 +128,18 @@ function drawHeatingCharts(JsonObject){
 
         if(SensorId === undefined) {
             SensorId = JsonObject.myRows[r]["Sensor ID"];
+            PropertyID = organiseProperties(SensorId);
         }
 
 
         if(JsonObject.myRows[r]["Sensor ID"] === SensorId ) {
-
             if (JsonObject.myRows[r]["Type Of data Stored"] === "tempHeating") {
                 let numericalData = JsonObject.myRows[r]["Data Value"];
-                //let stringHeading = JsonObject.myRows[r]["Type Of data Stored"];
+
                 numericalData = parseInt(numericalData);
-                TotalTemp = TotalTemp + parseInt(numericalData);
-                data.addRow([SensorId, numericalData]);
+                PropertyID = organiseProperties(SensorId);
+                //console.log(PropertyID);
+                data.addRow([PropertyID, numericalData]);
             }
         }else{
             //NumberOfSensorsCycled = NumberOfSensorsCycled + 1;
@@ -151,12 +166,14 @@ function drawPowerUsedCharts(JsonObject){
 
     let data = new google.visualization.DataTable();
     let SensorId;
+    let PropertyID = "";
     data.addColumn('string', 'heading');
     data.addColumn('number', 'power Used');
     for(let r = 0; r < JsonObject.myRows.length; r++) {
 
         if(SensorId === undefined) {
             SensorId = JsonObject.myRows[r]["Sensor ID"];
+            PropertyID = organiseProperties(SensorId);
         }
 
         if(JsonObject.myRows[r]["Type Of data Stored"] === "powerOverall") {
@@ -164,7 +181,9 @@ function drawPowerUsedCharts(JsonObject){
             let stringHeading = JsonObject.myRows[r]["Sensor ID"];
             let date = JsonObject.myRows[r]["Date and Time"];
             numericalData = parseInt(numericalData);
-            data.addRow([stringHeading + " " + date, numericalData]);
+            PropertyID = organiseProperties(SensorId);
+            console.log(SensorId);
+            data.addRow([PropertyID, numericalData]);
         }else{
             SensorId = JsonObject.myRows[r]["Sensor ID"];
         }
@@ -354,48 +373,114 @@ function drawHumidityOverTime(JsonObject){
     chart.draw(data, options);
 }
 
+//A FUNCTION full of if statements, this is to connect all of the different sensors to the right flat number
+//helps organise the charts better
+function organiseProperties(sensorStringBase){
 
-function organiseProperties(sensorString){
-
-
+    //there is not real functional reason to make it all uppercase other than it help me with typing the strings out
+    //error free
+    let sensorString = sensorStringBase.toUpperCase();
+    //ever sensor id string has a enter space at the front of it from where the line in the csv file ends and wraps around
+    //.trim removes this whitespace
+    sensorString = sensorString.trim();
     //each flat has multiple sensors, so to get the overall stats for the properites these sensors must all be
     //processed at the same time
     //some have a extra sensor depending on if the flat has two bedrooms or one
     if(sensorString === "77DC2F7B" || sensorString === "77B977C4" || sensorString === "77C3BA1E"
-        || sensorString === "77F3A828" || sensorString === "77D90066"){
-        console.log("Flat 11");
+        || sensorString === "77F3A828" || sensorString === "77D90066" || sensorString === "BOILERNODE-0-1"
+        ||sensorString === "GASENODE-0-1" || sensorString === "POWERNODE-0-1"){
+        //console.log("Flat 11");
         return "Flat 11";
     }
+    if(sensorString === "BOILERNODE-0-2" || sensorString === "POWERNODE-0-2"  || sensorString === "GASENODE-0-2"){
+        //console.log("Flat 3");
+        return "Flat 3";
+    }
     if(sensorString === "773BB32F" || sensorString === "77ED5B7A" || sensorString === "77C75411"
-        || sensorString === "770FAC31" || sensorString === "77DEA34E" || sensorString === "77871D68"){
-        console.log("Flat 21");
+        || sensorString === "770FAC31" || sensorString === "77DEA34E" || sensorString === "77871D68" || sensorString === "BOILERNODE-1-1"
+        || sensorString === "GASNODE-1-1" || sensorString === "POWERNODE-1-1"){
+        //console.log("Flat 21");
         return "Flat 21";
     }
     if(sensorString === "77265819" || sensorString === "77DFC691" || sensorString === "77C230B9"
-        || sensorString === "7776F7A5" || sensorString === "77F00716"){
-        console.log("Flat 14");
+        || sensorString === "7776F7A5" || sensorString === "77F00716" || sensorString === "BOILERNODE-1-2"|| sensorString === "GASNODE-1-2"
+        || sensorString === "POWERNODE-1-2"){
+        //console.log("Flat 14");
         return "Flat 14";
     }
     if(sensorString === "77D5C8CE" || sensorString === "77009DLE" || sensorString === "770B4EDD"
-        || sensorString === "77984608" || sensorString === "773A3190" || sensorString === "77311DF7"){
-        console.log("Flat 20");
+        || sensorString === "77984608" || sensorString === "773A3190" || sensorString === "77311DF7" || sensorString === "BOILERNODE-1-3"
+        || sensorString === "GASENODE-1-3" || sensorString === "POWERNODE-1-3"){
+        //console.log("Flat 20");
         return "Flat 20";
     }
     if(sensorString === "78596E4F" || sensorString === "78B70D36" || sensorString === "78A56E07"
-        || sensorString === "78F89003" || sensorString === "780780BE"){
-        console.log("Flat 35");
+        || sensorString === "78F89003" || sensorString === "780780BE"|| sensorString === "GASNODE-3-1" || sensorString === "POWERNODE-3-1"){
+        //console.log("Flat 35");
         return "Flat 35";
     }
     if(sensorString === "78AEBB26" || sensorString === "783D3E26" || sensorString === "78D3A4D7"
-        || sensorString === "7877574A" || sensorString === "7840555F"){
-        console.log("Flat 37");
+        || sensorString === "7877574A" || sensorString === "7840555F" || sensorString === "GASNODE-3-2" || sensorString === "POWERNODE-3-2"){
+        //console.log("Flat 37");
         return "Flat 37";
+    }else{
+        //shouldnt ever get this far down however if they get a new sensor with a new id the program wouldnt know about it
+        //it i have added it here
+        return "Unknown Flat";
     }
 
 }
 
-function organiseBoilers(){
+function drawAverageTempPerFlat(JsonObject){
+
+    //first need to get the sensor id
+    //convert that to a flat string
+    //check flat string is the same && the same type of data needed
+    //if it is not find the sensor id again and flat number for the new flat
+    //also draw the other flats details
 
 
+    let data = new google.visualization.DataTable();
+    let SensorId;
+    //let NumberOfSensorsCycled = 0;
+    let TotalTemp = 0;
+    data.addColumn('string', 'heading');
+    data.addColumn('number', 'Heating');
+    for(let r = 0; r < JsonObject.myRows.length; r++)
+    {
+
+        if(SensorId === undefined) {
+            SensorId = JsonObject.myRows[r]["Sensor ID"];
+
+        }
+
+
+        if(JsonObject.myRows[r]["Sensor ID"] === SensorId ) {
+
+            if (JsonObject.myRows[r]["Type Of data Stored"] === "tempHeating") {
+                let numericalData = JsonObject.myRows[r]["Data Value"];
+                //let stringHeading = JsonObject.myRows[r]["Type Of data Stored"];
+                numericalData = parseInt(numericalData);
+                TotalTemp = TotalTemp + parseInt(numericalData);
+                data.addRow([SensorId, numericalData]);
+            }
+        }else{
+            //NumberOfSensorsCycled = NumberOfSensorsCycled + 1;
+            //console.log(NumberOfSensorsCycled);
+            //console.log(TotalTemp);
+            SensorId = JsonObject.myRows[r]["Sensor ID"];
+        }
+
+
+    }
+
+    // Set chart options
+    let options = {'title':'Average Temperature Per Flat',
+        'width':800,
+        'height':2000};
+
+    // Instantiate and draw our chart, passing in some options.
+    let chart = new google.visualization.BarChart(document.getElementById('chart_div8'));
+    chart.draw(data, options);
 
 }

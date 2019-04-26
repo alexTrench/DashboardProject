@@ -179,7 +179,7 @@
 <div id="dashboard_div">
     <!--Divs that will hold each control and chart-->
     <form action="getData.php" method="POST" >
-        Select a file: <input type="file" name="fileName" id="fileName" accept=".csv" required>
+        Select a file: <input type="file" name="fileName" id="fileName" accept=".csv"  required>
         <button id="btn3" type="button" class="btn btn-primary" value="importedFile" >Submit File</button>
     </form>
 

@@ -202,13 +202,17 @@
             <td><div id="chart_div1"></div></td>
             <td><div id="chart_div2"></div></td>
             <td><div id="chart_div3"></div></td>
-            <td><div id="chart_div4"></div></td>
+
         </tr>
         <tr>
+            <td><div id="chart_div4"></div></td>
             <td><div id="chart_div5"></div></td>
             <td><div id="chart_div6"></div></td>
+        </tr>
+        <tr>
             <td><div id="chart_div7"></div></td>
             <td><div id="chart_div8"></div></td>
+            <td><div id="chart_div9"></div></td>
         </tr>
     </table>
 </div>

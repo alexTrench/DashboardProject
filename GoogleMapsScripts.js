@@ -34,7 +34,7 @@ function showVisibleMarkers(map, markers){
             //console.log(markers[i]);
             visibleMarkers.push(flats[i]);
         } else {
-            console.log('out of bounds');
+            //console.log('out of bounds');
 
         }
     }
@@ -50,7 +50,7 @@ function drawGoogleMapsTemp(VisibleMarkers){
     let data = new google.visualization.DataTable();
 
     let flats = ["Flat 11", "Flat 12","Flat 21","Flat 31","Flat 51","Flat 61"];
-    console.log(VisibleMarkers);
+    //console.log(VisibleMarkers);
 
     data.addColumn('string', 'Flat Number');
     data.addColumn('number', '');
@@ -60,7 +60,7 @@ function drawGoogleMapsTemp(VisibleMarkers){
 
         let randNumber = (Math.random() * 40) + 15;
 
-        if (randNumber < 25) {
+        if (randNumber < 20) {
             data.addRow([ VisibleMarkers[i], randNumber, 'red']);
         } else {
             data.addRow([ VisibleMarkers[i], randNumber, 'green']);
@@ -96,7 +96,7 @@ function drawGoogleMapsTemp(VisibleMarkers){
 
             randNum = (Math.random() * 40) + 15;
             data.setValue(i, 1,randNum);
-            if (randNum < 25) {
+            if (randNum < 20) {
                 data.setValue(i, 2, 'red');
             } else {
                 data.setValue(i, 2, 'green');
@@ -116,7 +116,7 @@ function drawGoogleMapsHumidity(VisibleMarkers){
     let data = new google.visualization.DataTable();
 
     let flats = ["Flat 11", "Flat 12","Flat 21","Flat 31","Flat 51","Flat 61"];
-    console.log(VisibleMarkers);
+    //console.log(VisibleMarkers);
 
     data.addColumn('string', 'Flat Number');
     data.addColumn('number', '');
@@ -126,7 +126,7 @@ function drawGoogleMapsHumidity(VisibleMarkers){
 
         let randNumber = (Math.random() * 40) + 15;
 
-        if (randNumber < 25) {
+        if (randNumber < 20) {
             data.addRow([ VisibleMarkers[i], randNumber, 'red']);
         } else {
             data.addRow([ VisibleMarkers[i], randNumber, 'green']);
@@ -163,7 +163,7 @@ function drawGoogleMapsHumidity(VisibleMarkers){
 
             randNum = (Math.random() *  40) + 15;
             data.setValue(i, 1,randNum);
-            if (randNum < 25) {
+            if (randNum < 20) {
                 data.setValue(i, 2, 'red');
             } else {
                 data.setValue(i, 2, 'green');
@@ -184,7 +184,7 @@ function drawGoogleMapsLight(VisibleMarkers){
     let data = new google.visualization.DataTable();
 
     let flats = ["Flat 11", "Flat 12","Flat 21","Flat 31","Flat 51","Flat 61"];
-    console.log(VisibleMarkers);
+    //console.log(VisibleMarkers);
 
     data.addColumn('string', 'Flat Number');
     data.addColumn('number', '');
@@ -217,6 +217,7 @@ function drawGoogleMapsLight(VisibleMarkers){
             duration: 1000,
             easing: 'out',
         },
+
     };
     // Instantiate and draw our chart, passing in some options.
     var chart = new google.visualization.ColumnChart(document.getElementById('chart_div3'));

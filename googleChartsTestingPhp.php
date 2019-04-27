@@ -133,6 +133,9 @@
             <td><div id="chart_div3"></div></td>
         </tr>
         <tr>
+
+        </tr>
+        <tr>
             <td><div id="chart_div4"></div></td>
             <td><div id="chart_div5"></div></td>
             <td><div id="chart_div6"></div></td>

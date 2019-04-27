@@ -25,7 +25,6 @@ function ConstructJsonObject(){
     //organiseProperties(JsonParsed);
     drawHumidityCharts(JsonParsed);
     drawLightCharts(JsonParsed);
-    drawHeatingCharts(JsonParsed);
     drawPowerUsedCharts(JsonParsed);
     drawLineChart(JsonParsed);
     drawHumidityOverTime(JsonParsed);
@@ -42,6 +41,9 @@ function drawHumidityCharts(JsonObject){
     let SensorId;
     let numericalData = 0;
     let PropertyID = "";
+    let TotalHumidity = 0;
+    let rowsInBoiler = 0;
+    let averageHumidity = 0;
     data.addColumn('string', 'heading');
     data.addColumn('number', 'Humidity');
     for(let r = 0; r < JsonObject.myRows.length; r++)
@@ -50,21 +52,44 @@ function drawHumidityCharts(JsonObject){
             SensorId = JsonObject.myRows[r]["Sensor ID"];
             PropertyID = organiseProperties(SensorId);
         }
-        if (JsonObject.myRows[r]["Type Of data Stored"] === "humidity") {
-                numericalData = JsonObject.myRows[r]["Data Value"];
-                numericalData = parseInt(numericalData);
-                PropertyID = organiseProperties(SensorId);
-                data.addRow([PropertyID, numericalData]);
 
+        if(JsonObject.myRows[r]["Sensor ID"] === SensorId ) {
+            if (JsonObject.myRows[r]["Type Of data Stored"] === "humidity") {
+                numericalData = JsonObject.myRows[r]["Data Value"];
+                PropertyID = organiseProperties(SensorId);
+                //data.addRow([PropertyID, numericalData]);
+                numericalData = parseInt(numericalData);
+                rowsInBoiler++;
+                console.log(rowsInBoiler);
+                TotalHumidity = TotalHumidity + numericalData;
+                console.log(TotalHumidity);
+
+            }
         }else{
+
+            averageHumidity = TotalHumidity / rowsInBoiler;
+            if(averageHumidity > 0) {
+                data.addRow([PropertyID, averageHumidity]);
+            }
+            //console.log(averageTemp);
+            //reset some variable for next sensor average temp
+            TotalHumidity = 0;
+            averageHumidity = 0;
+            rowsInBoiler = 0;
+
+            //data.addRow([PropertyID, numericalData]);
+
+
             SensorId = JsonObject.myRows[r]["Sensor ID"]
+
+
             }
     }
 
     // Set chart options
     let options = {'title':'Humidity',
-        'width':800,
-        'height':2000};
+        'width':700,
+        'height':400};
 
     // Instantiate and draw our chart, passing in some options.
     let chart = new google.visualization.BarChart(document.getElementById('chart_div1'));
@@ -72,55 +97,21 @@ function drawHumidityCharts(JsonObject){
 }
 
 
+/*<-- TEMPERATURE CHART -->*/
+function drawAverageTempPerFlat(JsonObject){
 
-            /*<-- LIGHT INTAKE CHART -->*/
-function drawLightCharts(JsonObject){
-
-    let data = new google.visualization.DataTable();
-    let SensorId;
-    let PropertyID = "";
-    let numericalData;
-    data.addColumn('string', 'heading');
-    data.addColumn('number', 'Light');
-    for(let r = 0; r < JsonObject.myRows.length; r++)
-    {
-
-        if(SensorId === undefined) {
-            SensorId = JsonObject.myRows[r]["Sensor ID"];
-            PropertyID = organiseProperties(SensorId);
-        }
-
-
-        if(JsonObject.myRows[r]["Type Of data Stored"] === "light") {
-            numericalData = JsonObject.myRows[r]["Data Value"];
-            PropertyID = organiseProperties(SensorId);
-            numericalData = parseInt(numericalData);
-            data.addRow([PropertyID, numericalData]);
-        }else{
-            SensorId = JsonObject.myRows[r]["Sensor ID"];
-        }
-    }
-
-    // Set chart options
-    let options = {'title':'Light',
-        'width':800,
-        'height':2000};
-
-    // Instantiate and draw our chart, passing in some options.
-    let chart = new google.visualization.BarChart(document.getElementById('chart_div2'));
-    if(data !== null) {
-        chart.draw(data, options);
-    }
-
-}
-
-                /*<-- TEMPERATURE CHART -->*/
-function drawHeatingCharts(JsonObject){
+    //first need to get the sensor id
+    //convert that to a flat string
+    //check flat string is the same && the same type of data needed
+    //if it is not find the sensor id again and flat number for the new flat
+    //also draw the other flats details
 
     let data = new google.visualization.DataTable();
     let SensorId;
+    let TotalTemp = 0;
     let PropertyID = "";
-
+    let rowsInBoiler = 0;
+    let averageTemp = 0;
     data.addColumn('string', 'heading');
     data.addColumn('number', 'Heating');
     for(let r = 0; r < JsonObject.myRows.length; r++)
@@ -133,18 +124,28 @@ function drawHeatingCharts(JsonObject){
 
 
         if(JsonObject.myRows[r]["Sensor ID"] === SensorId ) {
+
             if (JsonObject.myRows[r]["Type Of data Stored"] === "tempHeating") {
                 let numericalData = JsonObject.myRows[r]["Data Value"];
-
-                numericalData = parseInt(numericalData);
+                //let stringHeading = JsonObject.myRows[r]["Type Of data Stored"];
                 PropertyID = organiseProperties(SensorId);
-                //console.log(PropertyID);
-                data.addRow([PropertyID, numericalData]);
+                numericalData = parseInt(numericalData);
+                rowsInBoiler ++;
+                //console.log(rowsInBoiler);
+                TotalTemp = TotalTemp + parseInt(numericalData);
+                //console.log(TotalTemp);
             }
         }else{
-            //NumberOfSensorsCycled = NumberOfSensorsCycled + 1;
-            //console.log(NumberOfSensorsCycled);
-            //console.log(TotalTemp);
+            averageTemp = TotalTemp / rowsInBoiler;
+            if(averageTemp > 0) {
+                data.addRow([PropertyID, averageTemp]);
+            }
+            //console.log(averageTemp);
+            //reset some variable for next sensor average temp
+            TotalTemp = 0;
+            averageTemp = 0;
+            rowsInBoiler = 0;
+
             SensorId = JsonObject.myRows[r]["Sensor ID"];
         }
 
@@ -152,21 +153,85 @@ function drawHeatingCharts(JsonObject){
     }
 
     // Set chart options
-    let options = {'title':'Temperature',
-        'width':800,
-        'height':2000};
+    let options = {'title':'Average Temperature Per Flat',
+        'width':700,
+        'height':400};
 
     // Instantiate and draw our chart, passing in some options.
     let chart = new google.visualization.BarChart(document.getElementById('chart_div3'));
     chart.draw(data, options);
 
 }
+            /*<-- LIGHT INTAKE CHART -->*/
+function drawLightCharts(JsonObject){
+
+    let data = new google.visualization.DataTable();
+    let SensorId;
+    let PropertyID = "";
+    let numericalData;
+    let TotalLight = 0;
+    let rowsInBoiler = 0;
+    let averageLight = 0;
+    data.addColumn('string', 'heading');
+    data.addColumn('number', 'Light');
+    for(let r = 0; r < JsonObject.myRows.length; r++)
+    {
+
+        if(SensorId === undefined) {
+            SensorId = JsonObject.myRows[r]["Sensor ID"];
+            PropertyID = organiseProperties(SensorId);
+        }
+
+        if(JsonObject.myRows[r]["Sensor ID"] === SensorId ) {
+            if (JsonObject.myRows[r]["Type Of data Stored"] === "light") {
+                numericalData = JsonObject.myRows[r]["Data Value"];
+                PropertyID = organiseProperties(SensorId);
+                numericalData = parseInt(numericalData);
+                rowsInBoiler ++;
+                //console.log(rowsInBoiler);
+                TotalLight = TotalLight + parseInt(numericalData);
+                //console.log(TotalTemp);
+
+            }
+        }else{
+
+            averageLight = TotalLight / rowsInBoiler;
+            if(averageLight > 0) {
+                data.addRow([PropertyID, averageLight]);
+            }
+            //console.log(averageTemp);
+            //reset some variable for next sensor average temp
+            TotalLight = 0;
+            averageLight = 0;
+            rowsInBoiler = 0;
+
+            SensorId = JsonObject.myRows[r]["Sensor ID"];
+        }
+    }
+
+    // Set chart options
+    let options = {'title':'Light',
+        'width':700,
+        'height':400};
+
+    // Instantiate and draw our chart, passing in some options.
+    let chart = new google.visualization.BarChart(document.getElementById('chart_div2'));
+    if(data !== null) {
+        chart.draw(data, options);
+    }
+
+}
+
+
 
 function drawPowerUsedCharts(JsonObject){
 
     let data = new google.visualization.DataTable();
     let SensorId;
     let PropertyID = "";
+    let TotalPower = 0;
+    let rowsInBoiler = 0;
+    let averagePower= 0;
     data.addColumn('string', 'heading');
     data.addColumn('number', 'power Used');
     for(let r = 0; r < JsonObject.myRows.length; r++) {
@@ -175,24 +240,40 @@ function drawPowerUsedCharts(JsonObject){
             SensorId = JsonObject.myRows[r]["Sensor ID"];
             PropertyID = organiseProperties(SensorId);
         }
+        if(JsonObject.myRows[r]["Sensor ID"] === SensorId ) {
+            if (JsonObject.myRows[r]["Type Of data Stored"] === "powerOverall") {
+                let numericalData = JsonObject.myRows[r]["Data Value"];
+                let stringHeading = JsonObject.myRows[r]["Sensor ID"];
+                let date = JsonObject.myRows[r]["Date and Time"];
+                numericalData = parseInt(numericalData);
+                PropertyID = organiseProperties(SensorId);
 
-        if(JsonObject.myRows[r]["Type Of data Stored"] === "powerOverall") {
-            let numericalData = JsonObject.myRows[r]["Data Value"];
-            let stringHeading = JsonObject.myRows[r]["Sensor ID"];
-            let date = JsonObject.myRows[r]["Date and Time"];
-            numericalData = parseInt(numericalData);
-            PropertyID = organiseProperties(SensorId);
-            console.log(SensorId);
-            data.addRow([PropertyID, numericalData]);
+                rowsInBoiler++;
+                //console.log(rowsInBoiler);
+                TotalPower = TotalPower + parseInt(numericalData);
+                //console.log(TotalTemp);
+                //console.log(SensorId);
+                //data.addRow([PropertyID, numericalData]);
+            }
         }else{
+
+            averagePower = TotalPower / rowsInBoiler;
+            if(averagePower > 0) {
+                data.addRow([PropertyID, averagePower]);
+            }
+            //console.log(averageTemp);
+            //reset some variable for next sensor average temp
+            TotalPower = 0;
+            averagePower = 0;
+            rowsInBoiler = 0;
             SensorId = JsonObject.myRows[r]["Sensor ID"];
         }
     }
 
     // Set chart options
     let options = {'title':'Power Used',
-        'width':800,
-        'height':2000};
+        'width':700,
+        'height':400};
 
     // Instantiate and draw our chart, passing in some options.
     let chart = new google.visualization.BarChart(document.getElementById('chart_div4'));
@@ -264,20 +345,33 @@ function drawLineChart(JsonObject){
     }
 
     // Set chart options
-    let options = {
+    var options = {
         chart: {
-            title: 'Temperature over time in a houseHold',
-            subtitle: 'in Celsius',
-            vAxis: {minValue: 0}
+            title: 'Humidity Over Time',
+            explorer: {axis: 'horizontal',
+                keepInBounds: true,}
         },
-        'width': 700,
-        'height': 600,
-
-
+        width: 700,
+        height: 400,
+        axes: {
+            x: {
+                0: {side: 'top'}
+            }
+        },
+        animation: {
+            startup: true,
+            duration: 100,
+            easing: 'out',
+        },
+        explorer: {
+            actions: ['dragToZoom', 'rightClickToReset'],
+            axis: 'horizontal',
+            keepInBounds: true,
+            maxZoomIn: 4.0},
     };
 
     // Instantiate and draw our chart, passing in some options.
-    let chart = new google.charts.Line(document.getElementById('chart_div6'));
+    let chart = new google.visualization.LineChart(document.getElementById('chart_div5'));
     chart.draw(data, options);
 }
 
@@ -349,27 +443,34 @@ function drawHumidityOverTime(JsonObject){
     }
 
     // Set chart options
-    let options = {
+    var options = {
         chart: {
-            title: 'Humidity in a houseHold over time',
-            subtitle: ''
+            title: 'Humidity Over Time',
+            explorer: {axis: 'horizontal',
+                keepInBounds: true,}
         },
         width: 700,
-        height: 600,
+        height: 400,
         axes: {
             x: {
-                0: {side: 'top'},
-                vAxis: {minValue: 0},
-            },
-            y: {
-                    maxValue: 100,
+                0: {side: 'top'}
             }
-        }
+        },
+        animation: {
+            startup: true,
+            duration: 100,
+            easing: 'out',
+        },
+        explorer: {
+            actions: ['dragToZoom', 'rightClickToReset'],
+            axis: 'horizontal',
+            keepInBounds: true,
+            maxZoomIn: 4.0},
     };
 
 
     // Instantiate and draw our chart, passing in some options.
-    let chart = new google.charts.Line(document.getElementById('chart_div7'));
+    let chart = new google.visualization.LineChart(document.getElementById('chart_div6'));
     chart.draw(data, options);
 }
 
@@ -431,56 +532,3 @@ function organiseProperties(sensorStringBase){
 
 }
 
-function drawAverageTempPerFlat(JsonObject){
-
-    //first need to get the sensor id
-    //convert that to a flat string
-    //check flat string is the same && the same type of data needed
-    //if it is not find the sensor id again and flat number for the new flat
-    //also draw the other flats details
-
-
-    let data = new google.visualization.DataTable();
-    let SensorId;
-    //let NumberOfSensorsCycled = 0;
-    let TotalTemp = 0;
-    data.addColumn('string', 'heading');
-    data.addColumn('number', 'Heating');
-    for(let r = 0; r < JsonObject.myRows.length; r++)
-    {
-
-        if(SensorId === undefined) {
-            SensorId = JsonObject.myRows[r]["Sensor ID"];
-
-        }
-
-
-        if(JsonObject.myRows[r]["Sensor ID"] === SensorId ) {
-
-            if (JsonObject.myRows[r]["Type Of data Stored"] === "tempHeating") {
-                let numericalData = JsonObject.myRows[r]["Data Value"];
-                //let stringHeading = JsonObject.myRows[r]["Type Of data Stored"];
-                numericalData = parseInt(numericalData);
-                TotalTemp = TotalTemp + parseInt(numericalData);
-                data.addRow([SensorId, numericalData]);
-            }
-        }else{
-            //NumberOfSensorsCycled = NumberOfSensorsCycled + 1;
-            //console.log(NumberOfSensorsCycled);
-            //console.log(TotalTemp);
-            SensorId = JsonObject.myRows[r]["Sensor ID"];
-        }
-
-
-    }
-
-    // Set chart options
-    let options = {'title':'Average Temperature Per Flat',
-        'width':800,
-        'height':2000};
-
-    // Instantiate and draw our chart, passing in some options.
-    let chart = new google.visualization.BarChart(document.getElementById('chart_div8'));
-    chart.draw(data, options);
-
-}

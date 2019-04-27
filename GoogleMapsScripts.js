@@ -5,11 +5,11 @@ function initMap() {
     //array of potential house locations
     var arrayOfLocations = [];
     var markers = [];
-    var map = new google.maps.Map(document.getElementById('map'), {zoom: 6, center: {lat: 52.3781, lng:  2.3360}});
+    var map = new google.maps.Map(document.getElementById('map'), {zoom: 4, center: {lat: 50.3781, lng:  15.360}});
 
     for(let i = 0; i < 9; i++){
 
-        arrayOfLocations[i] = new google.maps.LatLng( (Math.random()*(7)+46), (Math.random()*(10.0360) + 10) );
+        arrayOfLocations[i] = new google.maps.LatLng( (Math.random()*(12)+42), (Math.random()*(20.0960) + 12) );
 
         //console.log(arrayOfMarkers);
         var marker = new google.maps.Marker({position: arrayOfLocations[i], map: map,});
@@ -54,8 +54,8 @@ function drawGoogleMapsTemp(VisibleMarkers){
 
     data.addColumn('string', 'Flat Number');
     data.addColumn('number', '');
-
     data.addColumn({type:'string', role:'style'});
+
     for(let i = 0; i < VisibleMarkers.length; i++) {
 
         let randNumber = (Math.random() * 40) + 15;
@@ -88,12 +88,22 @@ function drawGoogleMapsTemp(VisibleMarkers){
     var chart = new google.visualization.ColumnChart(document.getElementById('chart_div1'));
     chart.draw(data, options);
 
+    let randNum;
+
     setInterval(function() {
 
         for (let i = 0; i < VisibleMarkers.length; i++) {
 
-            data.setValue(i, 1, (Math.random() * 40) + 15);
+            randNum = (Math.random() * 40) + 15;
+            data.setValue(i, 1,randNum);
+            if (randNum < 25) {
+                data.setValue(i, 2, 'red');
+            } else {
+                data.setValue(i, 2, 'green');
+            }
 
+            //set the color of the new chart based on value
+            //data.setValue(i, 2, 'Black');
         }
 
         chart.draw(data, options);
@@ -145,19 +155,22 @@ function drawGoogleMapsHumidity(VisibleMarkers){
     chart.draw(data, options);
 
 
+    let randNum;
+
     setInterval(function() {
 
-        for(let i = 0; i < VisibleMarkers.length; i++){
+        for (let i = 0; i < VisibleMarkers.length; i++) {
 
-            let randNumber = (Math.random() * 20) + 10;
-
-            if(randNumber < 20){
-                data.setValue(i, 1, randNumber, 'green');
-            }else{
-                data.setValue(i, 1, randNumber, 'blue');
+            randNum = (Math.random() *  40) + 15;
+            data.setValue(i, 1,randNum);
+            if (randNum < 25) {
+                data.setValue(i, 2, 'red');
+            } else {
+                data.setValue(i, 2, 'green');
             }
 
-
+            //set the color of the new chart based on value
+            //data.setValue(i, 2, 'Black');
         }
 
         chart.draw(data, options);
@@ -179,9 +192,9 @@ function drawGoogleMapsLight(VisibleMarkers){
     data.addColumn({type:'string', role:'style'});
     for(let i = 0; i < VisibleMarkers.length; i++) {
 
-        let randNumber = (Math.random() * 40) + 15;
+        let randNumber = (Math.random() * 80) + 30;
 
-        if (randNumber < 25) {
+        if (randNumber < 40) {
             data.addRow([ VisibleMarkers[i], randNumber, 'red']);
         } else {
             data.addRow([ VisibleMarkers[i], randNumber, 'green']);
@@ -210,19 +223,22 @@ function drawGoogleMapsLight(VisibleMarkers){
     chart.draw(data, options);
 
 
+    let randNum;
+
     setInterval(function() {
 
-        for(let i = 0; i < VisibleMarkers.length; i++){
+        for (let i = 0; i < VisibleMarkers.length; i++) {
 
-            let randNumber = (Math.random() * 20) + 10;
-
-            if(randNumber < 20){
-                data.setValue(i, 1, randNumber, 'green');
-            }else{
-                data.setValue(i, 1, randNumber, 'blue');
+            randNum = (Math.random() *  80) + 30;
+            data.setValue(i, 1,randNum);
+            if (randNum < 40) {
+                data.setValue(i, 2, 'red');
+            } else {
+                data.setValue(i, 2, 'green');
             }
 
-
+            //set the color of the new chart based on value
+            //data.setValue(i, 2, 'Black');
         }
 
         chart.draw(data, options);

@@ -16,7 +16,6 @@ function drawLiveTemp(){
 
     data.addColumn('string', 'Flat Number');
     data.addColumn('number', '');
-
     data.addColumn({type:'string', role:'style'});
     for(let i = 0; i < flats.length; i++) {
 
@@ -25,7 +24,7 @@ function drawLiveTemp(){
         if (randNumber < 25) {
             data.addRow([flats[i], randNumber, 'red']);
         } else {
-            data.addRow([flats[i], randNumber, 'green']);
+            data.addRow([flats[i], randNumber, '#004411']);
         }
     }
 
@@ -34,6 +33,7 @@ function drawLiveTemp(){
         'title': 'Live Temperature',
         'width': 500,
         'height': 400,
+        colors:['red','#004411','Black'],
         //start chart a 0, to give a more reliable chart look
         vAxis: {
             viewWindow: {
@@ -55,7 +55,7 @@ function drawLiveTemp(){
         for (let i = 0; i < flats.length; i++) {
 
             data.setValue(i, 1, (Math.random() * 40) + 15);
-
+            //data.setValue(i, 2, 'Black');
         }
 
         chart.draw(data, options);

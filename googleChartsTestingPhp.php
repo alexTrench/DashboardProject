@@ -15,6 +15,11 @@
         margin: 0 auto;
     }
 
+    .dashboardDiv{
+        width: 80%;
+        float: left;
+    }
+
     header {
         background: #55d6aa;
     }
@@ -111,10 +116,8 @@
 
         <nav>
             <ul>
-                <li><a href="googleChartsTestingPhp.php">Dashboard</a></li>
-                <li><a href="googleChartsCsv.php">Csv</a></li>
-                <li><a href="#">History</a></li>
-
+                <li><a href="googleChartsTestingPhp.php">Real Time Dashboard</a></li>
+                <li><a href="googleChartsCsv.php">historical Dashboard Csv</a></li>
             </ul>
         </nav>
     </div>
@@ -124,7 +127,7 @@
 <div id="map"></div>
 
 <!--Div that will hold the dashboard-->
-<div id="dashboard_div">
+<div id="dashboardDiv">
     <!--Divs that will hold each control and chart-->
     <table class="columns">
         <tr>

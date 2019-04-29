@@ -2,10 +2,10 @@ google.charts.load('current', {'packages':['corechart', 'controls']});
 
 
 // Set a callback to run when the Google Visualization API is loaded.
-google.charts.setOnLoadCallback(drawGagueTemp);
+//google.charts.setOnLoadCallback(drawGagueTemp);
+google.charts.setOnLoadCallback(drawAllFlatsTempLineChart);
 google.charts.setOnLoadCallback(drawTempLineChart);
 google.charts.setOnLoadCallback(drawGasElectricLineChart);
-
 google.charts.load('current', {'packages':['gauge']});
 
 function drawGagueTemp(){
@@ -24,7 +24,7 @@ function drawGagueTemp(){
         minorTicks: 5
     };
 
-    var chart = new google.visualization.Gauge(document.getElementById('chart_div4'));
+    var chart = new google.visualization.Gauge(document.getElementById('chart_div7'));
     chart.draw(data, optionsTemp);
 
     setInterval(function() {
@@ -80,7 +80,7 @@ function drawTempLineChart(){
                 actions: ['dragToZoom', 'rightClickToReset'],
                 axis: 'horizontal',
                 keepInBounds: true,
-                maxZoomIn: 4.0},
+                maxZoomIn: 8.0},
         };
 
         var chart = new google.visualization.LineChart(document.getElementById('chart_div5'));
@@ -132,7 +132,7 @@ function drawGasElectricLineChart(){
             actions: ['dragToZoom', 'rightClickToReset'],
             axis: 'horizontal',
             keepInBounds: true,
-            maxZoomIn: 4.0},
+            maxZoomIn: 8.0},
     };
 
     var chart = new google.visualization.LineChart(document.getElementById('chart_div6'));
@@ -147,3 +147,76 @@ function drawGasElectricLineChart(){
         chart.draw(data, options);
     }, 5000);
 }
+
+function drawAllFlatsTempLineChart(Markers){
+
+
+    let flats = ["Flat 1", "Flat 3", "Flat 8", "Flat 11", "Flat 12","Flat 21","Flat 31","Flat 51","Flat 61"];
+    let chartDataValue;
+    let currentdate = new Date();
+    if(data === undefined) {
+        var data = new google.visualization.DataTable();
+        data.addColumn('date', 'Time');
+
+
+        console.log(currentdate);
+
+
+        chartDataValue = (Math.random() * 10 + 5);
+
+        for (let i = 0; i < flats.length; i++) {
+            data.addColumn('number', flats[i]);
+            //console.log(flats[i]);
+        }
+
+
+        //1 data and 9 random values for each of the properties
+        data.addRow([currentdate, (Math.random() * 10 + 5), (Math.random() * 10 + 5), (Math.random() * 10 + 5),
+            (Math.random() * 10 + 5), (Math.random() * 10 + 5), (Math.random() * 10 + 5), (Math.random() * 10 + 5),
+            (Math.random() * 10 + 5), (Math.random() * 10 + 5),
+        ]);
+
+        var chart = new google.visualization.LineChart(document.getElementById('chart_div4'));
+    }
+
+    var options = {
+        chart: {
+            'title': 'Temp Over Time All Flats',
+        },
+        width: 700,
+        height: 400,
+        axes: {
+            x: {
+                0: {side: 'top'}
+            }
+        },
+        animation: {
+            startup: true,
+            duration: 100,
+            easing: 'out',
+        },
+        explorer: {
+            actions: ['dragToZoom', 'rightClickToReset'],
+            axis: 'horizontal',
+            keepInBounds: true,
+            maxZoomIn: 8.0},
+    };
+
+
+
+    chart.draw(data,options);
+
+    setInterval(function() {
+
+        let NewCurrentdate = new Date();
+        chartDataValue = chartDataValue + (Math.random()* 12 - 6);
+
+        data.addRow([NewCurrentdate, (Math.random() * 10 + 5), (Math.random() * 10 + 5),(Math.random() * 10 + 5),
+            (Math.random() * 10 + 5),(Math.random() * 10 + 5),(Math.random() * 10 + 5),(Math.random() * 10 + 5),
+            (Math.random() * 10 + 5),(Math.random() * 10 + 5),
+        ]);
+
+        chart.draw(data, options);
+    }, 5000);
+}
+

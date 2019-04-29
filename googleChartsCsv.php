@@ -166,10 +166,8 @@
 
         <nav>
             <ul>
-                <li><a href="googleChartsTestingPhp.php">Dashboard</a></li>
-                <li><a href="googleChartsCsv.php">Csv</a></li>
-                <li><a href="#">History</a></li>
-
+                <li><a href="googleChartsTestingPhp.php">Real Time Dashboard</a></li>
+                <li><a href="googleChartsCsv.php">historical Dashboard Csv</a></li>
             </ul>
         </nav>
     </div>
@@ -180,7 +178,7 @@
     <!--Divs that will hold each control and chart-->
     <form action="getData.php" method="POST" >
         Select a file: <input type="file" name="fileName" id="fileName" accept=".csv"  required>
-        <button id="btn3" type="button" class="btn btn-primary" value="importedFile" >Submit File</button>
+        <button id="btn3" type="button" class="btn btn-primary" value="importedFile" onclick="ConstructJsonObject()" >Generate Charts</button>
     </form>
 
 
@@ -216,7 +214,7 @@
         </tr>
     </table>
 </div>
-<div class="row" id="csvData">
+<div class="row" id="csvData" style="visibility: collapse">
     <table id="csvDataTable" class="table">
         <thead>
             <tr>

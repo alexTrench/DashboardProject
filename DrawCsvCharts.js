@@ -87,12 +87,12 @@ function drawHumidityCharts(JsonObject){
     }
 
     // Set chart options
-    let options = {'title':'Humidity',
-        'width':700,
+    let options = {'title':'Average Humidity per Flat %',
+        'width':500,
         'height':400};
 
     // Instantiate and draw our chart, passing in some options.
-    let chart = new google.visualization.BarChart(document.getElementById('chart_div1'));
+    let chart = new google.visualization.ColumnChart(document.getElementById('chart_div1'));
     chart.draw(data, options);
 }
 
@@ -154,11 +154,11 @@ function drawAverageTempPerFlat(JsonObject){
 
     // Set chart options
     let options = {'title':'Average Temperature Per Flat',
-        'width':700,
+        'width':500,
         'height':400};
 
     // Instantiate and draw our chart, passing in some options.
-    let chart = new google.visualization.BarChart(document.getElementById('chart_div3'));
+    let chart = new google.visualization.ColumnChart(document.getElementById('chart_div3'));
     chart.draw(data, options);
 
 }
@@ -172,6 +172,7 @@ function drawLightCharts(JsonObject){
     let TotalLight = 0;
     let rowsInBoiler = 0;
     let averageLight = 0;
+
     data.addColumn('string', 'heading');
     data.addColumn('number', 'Light');
     for(let r = 0; r < JsonObject.myRows.length; r++)
@@ -211,11 +212,11 @@ function drawLightCharts(JsonObject){
 
     // Set chart options
     let options = {'title':'Light',
-        'width':700,
+        'width':500,
         'height':400};
 
     // Instantiate and draw our chart, passing in some options.
-    let chart = new google.visualization.BarChart(document.getElementById('chart_div2'));
+    let chart = new google.visualization.ColumnChart(document.getElementById('chart_div2'));
     if(data !== null) {
         chart.draw(data, options);
     }
@@ -232,6 +233,7 @@ function drawPowerUsedCharts(JsonObject){
     let TotalPower = 0;
     let rowsInBoiler = 0;
     let averagePower= 0;
+
     data.addColumn('string', 'heading');
     data.addColumn('number', 'power Used');
     for(let r = 0; r < JsonObject.myRows.length; r++) {
@@ -271,12 +273,12 @@ function drawPowerUsedCharts(JsonObject){
     }
 
     // Set chart options
-    let options = {'title':'Power Used',
-        'width':700,
+    let options = {'title':'Average Power Used per Flat',
+        'width':500,
         'height':400};
 
     // Instantiate and draw our chart, passing in some options.
-    let chart = new google.visualization.BarChart(document.getElementById('chart_div4'));
+    let chart = new google.visualization.ColumnChart(document.getElementById('chart_div4'));
     chart.draw(data, options);
 
 }
@@ -351,7 +353,7 @@ function drawLineChart(JsonObject){
             explorer: {axis: 'horizontal',
                 keepInBounds: true,}
         },
-        width: 700,
+        width: 500,
         height: 400,
         axes: {
             x: {
@@ -367,7 +369,7 @@ function drawLineChart(JsonObject){
             actions: ['dragToZoom', 'rightClickToReset'],
             axis: 'horizontal',
             keepInBounds: true,
-            maxZoomIn: 4.0},
+            maxZoomIn: 10.0},
     };
 
     // Instantiate and draw our chart, passing in some options.
@@ -449,7 +451,7 @@ function drawHumidityOverTime(JsonObject){
             explorer: {axis: 'horizontal',
                 keepInBounds: true,}
         },
-        width: 700,
+        width: 500,
         height: 400,
         axes: {
             x: {
@@ -465,7 +467,7 @@ function drawHumidityOverTime(JsonObject){
             actions: ['dragToZoom', 'rightClickToReset'],
             axis: 'horizontal',
             keepInBounds: true,
-            maxZoomIn: 4.0},
+            maxZoomIn: 10.0},
     };
 
 

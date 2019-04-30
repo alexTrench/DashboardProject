@@ -49,7 +49,7 @@ function drawTempLineChart(){
 
 
         let currentdate = new Date();
-        console.log(currentdate);
+        //console.log(currentdate);
 
         for(let i = 0; i < 5; i++) {
             data.addRow([currentdate,(Math.random()* 10 + 5),(Math.random()* 10 + 5),(Math.random()* 10 + 5)]);
@@ -143,7 +143,7 @@ function drawGasElectricLineChart(){
     }, 10000);
 }
 
-function drawAllFlatsTempLineChart(Markers){
+function drawAllFlatsTempLineChart(){
 
 
     let flats = ["Flat 1", "Flat 3", "Flat 8", "Flat 11", "Flat 12","Flat 21","Flat 31","Flat 51","Flat 61"];
@@ -174,10 +174,9 @@ function drawAllFlatsTempLineChart(Markers){
         var chart = new google.visualization.LineChart(document.getElementById('chart_div4'));
     }
 
-    var options = {
+    let options = {
         chart: {
-            'title': 'Temp Over Time All Flats',
-            vAxis: {title: 'Temperature Celsius'},
+            title: 'Temp Over Time All Flats',
         },
         width: 600,
         height: 400,
@@ -208,9 +207,9 @@ function drawAllFlatsTempLineChart(Markers){
         let NewCurrentdate = new Date();
         chartDataValue = chartDataValue + (Math.random()* 12 - 6);
 
-        data.addRow([NewCurrentdate, (Math.random() * 10 + 5), (Math.random() * 10 + 5),(Math.random() * 10 + 5),
-            (Math.random() * 10 + 5),(Math.random() * 10 + 5),(Math.random() * 10 + 5),(Math.random() * 10 + 5),
-            (Math.random() * 10 + 5),(Math.random() * 10 + 5),
+        data.addRow([NewCurrentdate, (Math.random() * 30 + 10), (Math.random() * 30 + 10),(Math.random() * 30 + 10),
+            (Math.random() * 30 + 10),(Math.random() * 30 + 10),(Math.random() * 30 + 10),(Math.random() * 30 + 10),
+            (Math.random() * 30 + 10),(Math.random() * 30 + 10),
         ]);
 
         chart.draw(data, options);

@@ -162,12 +162,15 @@
             margin: auto;
             width: 50%;
             border: 3px solid #005f86;
-            padding: 10px;
             text-align: center;
         }
         #dashboardDiv{
-            width: 80%;
-            float: left;
+            margin: auto;
+            width: 50%;
+            border: 3px solid #005f86;
+            text-align: center;
+            padding-top: 0.5%;
+            padding-bottom: 0.5%;
         }
 
 

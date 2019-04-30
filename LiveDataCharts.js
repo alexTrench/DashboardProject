@@ -2,7 +2,7 @@ google.charts.load('current', {'packages':['corechart', 'controls']});
 
 
 // Set a callback to run when the Google Visualization API is loaded.
-//google.charts.setOnLoadCallback(drawGagueTemp);
+google.charts.setOnLoadCallback(drawGagueTemp);
 google.charts.setOnLoadCallback(drawAllFlatsTempLineChart);
 google.charts.setOnLoadCallback(drawTempLineChart);
 google.charts.setOnLoadCallback(drawGasElectricLineChart);
@@ -14,7 +14,6 @@ function drawGagueTemp(){
         ['Label', 'Value'],
         ['Temp', 0],
         ['Humidity', 0],
-        ['Light ', 0]
     ]);
 
     var optionsTemp = {
@@ -24,21 +23,17 @@ function drawGagueTemp(){
         minorTicks: 5
     };
 
-    var chart = new google.visualization.Gauge(document.getElementById('chart_div7'));
+    var chart = new google.visualization.Gauge(document.getElementById('chart_div10'));
     chart.draw(data, optionsTemp);
 
     setInterval(function() {
         data.setValue(0, 1, 40 + Math.round(10 * Math.random()));
         chart.draw(data, optionsTemp);
-    }, 5000);
+    }, 10000);
     setInterval(function() {
         data.setValue(1, 1, 40 + Math.round(40 * Math.random()));
         chart.draw(data, optionsTemp);
-    }, 5000);
-    setInterval(function() {
-        data.setValue(2, 1, 60 + Math.round(20 * Math.random()));
-        chart.draw(data, optionsTemp);
-    }, 5000);
+    }, 10000);
 }
 
 
@@ -64,7 +59,7 @@ function drawTempLineChart(){
             chart: {
                 title: 'Key HouseHold Statistics',
             },
-            width: 700,
+            width: 600,
             height: 400,
             axes: {
                 x: {
@@ -80,7 +75,7 @@ function drawTempLineChart(){
                 actions: ['dragToZoom', 'rightClickToReset'],
                 axis: 'horizontal',
                 keepInBounds: true,
-                maxZoomIn: 8.0},
+                maxZoomIn: 100.0},
         };
 
         var chart = new google.visualization.LineChart(document.getElementById('chart_div5'));
@@ -92,7 +87,7 @@ function drawTempLineChart(){
             data.addRow([NewCurrentdate ,(Math.random()* 40 + 15),(Math.random()* 40 + 10),(Math.random()* 60 + 30)]);
 
             chart.draw(data, options);
-        }, 5000);
+        }, 10000);
 }
 
 function drawGasElectricLineChart(){
@@ -116,7 +111,7 @@ function drawGasElectricLineChart(){
             explorer: {axis: 'horizontal',
                 keepInBounds: true,}
         },
-        width: 700,
+        width: 600,
         height: 400,
         axes: {
             x: {
@@ -145,7 +140,7 @@ function drawGasElectricLineChart(){
         data.addRow([NewCurrentdate ,(Math.random()* 10 + 5),(Math.random()* 40 + 10)]);
 
         chart.draw(data, options);
-    }, 5000);
+    }, 10000);
 }
 
 function drawAllFlatsTempLineChart(Markers){
@@ -162,7 +157,7 @@ function drawAllFlatsTempLineChart(Markers){
         console.log(currentdate);
 
 
-        chartDataValue = (Math.random() * 10 + 5);
+        chartDataValue = (Math.random() * 30 + 10);
 
         for (let i = 0; i < flats.length; i++) {
             data.addColumn('number', flats[i]);
@@ -171,9 +166,9 @@ function drawAllFlatsTempLineChart(Markers){
 
 
         //1 data and 9 random values for each of the properties
-        data.addRow([currentdate, (Math.random() * 10 + 5), (Math.random() * 10 + 5), (Math.random() * 10 + 5),
-            (Math.random() * 10 + 5), (Math.random() * 10 + 5), (Math.random() * 10 + 5), (Math.random() * 10 + 5),
-            (Math.random() * 10 + 5), (Math.random() * 10 + 5),
+        data.addRow([currentdate, (Math.random() * 30 + 10), (Math.random() * 30 + 10), (Math.random() * 30 + 10),
+            (Math.random() * 30 + 10), (Math.random() * 30 + 10), (Math.random() * 30 + 10), (Math.random() * 30 + 10),
+            (Math.random() * 30 + 10), (Math.random() * 30 + 10),
         ]);
 
         var chart = new google.visualization.LineChart(document.getElementById('chart_div4'));
@@ -182,12 +177,14 @@ function drawAllFlatsTempLineChart(Markers){
     var options = {
         chart: {
             'title': 'Temp Over Time All Flats',
+            vAxis: {title: 'Temperature Celsius'},
         },
-        width: 700,
+        width: 600,
         height: 400,
         axes: {
             x: {
-                0: {side: 'top'}
+                0: {side: 'top'},
+
             }
         },
         animation: {
@@ -217,6 +214,6 @@ function drawAllFlatsTempLineChart(Markers){
         ]);
 
         chart.draw(data, options);
-    }, 5000);
+    }, 10000);
 }
 

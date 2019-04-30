@@ -35,7 +35,7 @@ function ConstructJsonObject(){
 // Load the Visualization API and the piechart package, aswell as the control widgets.
 google.charts.load('current', {'packages':['corechart', 'controls', ['line']]});
 
-function drawHumidityCharts(JsonObject){
+function drawHumidityCharts(JsonObject) {
 
     let data = new google.visualization.DataTable();
     let SensorId;
@@ -46,14 +46,13 @@ function drawHumidityCharts(JsonObject){
     let averageHumidity = 0;
     data.addColumn('string', 'heading');
     data.addColumn('number', 'Humidity');
-    for(let r = 0; r < JsonObject.myRows.length; r++)
-    {
-        if(SensorId === undefined) {
+    for (let r = 0; r < JsonObject.myRows.length; r++) {
+        if (SensorId === undefined) {
             SensorId = JsonObject.myRows[r]["Sensor ID"];
             PropertyID = organiseProperties(SensorId);
         }
 
-        if(JsonObject.myRows[r]["Sensor ID"] === SensorId ) {
+        if (JsonObject.myRows[r]["Sensor ID"] === SensorId) {
             if (JsonObject.myRows[r]["Type Of data Stored"] === "humidity") {
                 numericalData = JsonObject.myRows[r]["Data Value"];
                 PropertyID = organiseProperties(SensorId);
@@ -65,10 +64,10 @@ function drawHumidityCharts(JsonObject){
                 console.log(TotalHumidity);
 
             }
-        }else{
+        } else {
 
             averageHumidity = TotalHumidity / rowsInBoiler;
-            if(averageHumidity > 0) {
+            if (averageHumidity > 0) {
                 data.addRow([PropertyID, averageHumidity]);
             }
             //console.log(averageTemp);
@@ -83,13 +82,23 @@ function drawHumidityCharts(JsonObject){
             SensorId = JsonObject.myRows[r]["Sensor ID"]
 
 
-            }
+        }
     }
 
     // Set chart options
-    let options = {'title':'Average Humidity per Flat %',
-        'width':500,
-        'height':400};
+    let options = {
+        'title': 'Average Humidity per Flat %',
+        'width': 500,
+        'height': 400,
+        legend: {position: 'none'},
+        //start chart a 0, to give a more reliable chart look
+        vAxis: {
+            viewWindow: {
+                min: 0,
+                max: 100,
+            }
+        }
+    };
 
     // Instantiate and draw our chart, passing in some options.
     let chart = new google.visualization.ColumnChart(document.getElementById('chart_div1'));
@@ -154,8 +163,17 @@ function drawAverageTempPerFlat(JsonObject){
 
     // Set chart options
     let options = {'title':'Average Temperature Per Flat',
-        'width':500,
-        'height':400};
+        'width': 500,
+        'height': 400,
+        legend: {position: 'none'},
+    //start chart a 0, to give a more reliable chart look
+        vAxis: {
+            viewWindow: {
+              min: 0,
+                   max: 100,
+           }
+        }
+    };
 
     // Instantiate and draw our chart, passing in some options.
     let chart = new google.visualization.ColumnChart(document.getElementById('chart_div3'));
@@ -211,9 +229,19 @@ function drawLightCharts(JsonObject){
     }
 
     // Set chart options
-    let options = {'title':'Light',
-        'width':500,
-        'height':400};
+    let options = {'title':'Average Light Per Flat',
+        'width': 500,
+        'height': 400,
+        legend: {position: 'none'},
+        //start chart a 0, to give a more reliable chart look
+        vAxis: {
+            viewWindow: {
+                min: 0,
+                max: 100,
+            }
+        }
+    };
+
 
     // Instantiate and draw our chart, passing in some options.
     let chart = new google.visualization.ColumnChart(document.getElementById('chart_div2'));
@@ -279,7 +307,7 @@ function drawPowerUsedCharts(JsonObject){
 
     // Instantiate and draw our chart, passing in some options.
     let chart = new google.visualization.ColumnChart(document.getElementById('chart_div4'));
-    chart.draw(data, options);
+        chart.draw(data, options);
 
 }
 
@@ -369,7 +397,7 @@ function drawLineChart(JsonObject){
             actions: ['dragToZoom', 'rightClickToReset'],
             axis: 'horizontal',
             keepInBounds: true,
-            maxZoomIn: 10.0},
+            maxZoomIn: 100.0},
     };
 
     // Instantiate and draw our chart, passing in some options.
@@ -467,7 +495,7 @@ function drawHumidityOverTime(JsonObject){
             actions: ['dragToZoom', 'rightClickToReset'],
             axis: 'horizontal',
             keepInBounds: true,
-            maxZoomIn: 10.0},
+            maxZoomIn: 100.0},
     };
 
 

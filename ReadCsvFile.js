@@ -1,4 +1,5 @@
 // Set a callback to run when the Google Visualization API is loaded.
+google.charts.load('current', {packages: ['corechart']});
 google.charts.setOnLoadCallback(readCsvFile);
 
 
@@ -52,13 +53,11 @@ function populateTable(file, length) {
     // const td = tableReference.insertCell();
     for(var i = 0; i <= length; i++){
         //console.log(file[i]);
-
         //makes sure there is always at least one row to start with
         //other rows are added on after this
         if(numberOfRows === 0){
             row = tableReference.insertRow();
             numberOfRows ++;
-            tableReference.addEventListener("click", ConstructJsonObject, false);
         }
         //used to get the time, time is always on the end of the csv file, does not have a comma so cannot
         //screen for it that way
@@ -74,7 +73,6 @@ function populateTable(file, length) {
             numberOfCells++;
             if(numberOfCells === 5) {
                 var row = tableReference.insertRow();
-                tableReference.addEventListener("click", ConstructJsonObject, false);
                 numberOfRows ++;
                 numberOfCells = 0;
             }
@@ -103,6 +101,8 @@ function populateTable(file, length) {
         }
 
     }
+
+    alert("Charts Ready");
     //or somehow make it a javascript obejct
     //json.parse() apparently does something useful with strings
 }

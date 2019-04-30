@@ -13,17 +13,22 @@ function ReadFileName()
             filename = filename.substring(1);
         }
         //pops up in browser for testing purposes
-        alert(filename + " Submitted");
-        console.log(filename);
 
-        var xmlhttp = new XMLHttpRequest();
-        xmlhttp.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-                document.getElementById("data").innerHTML = this.responseText;
-            }
-        };
-        xmlhttp.open("GET", "getData.php?filename=" + filename, true);
-        xmlhttp.send();
+        if(filename.substring(filename.length - 3, filename.length ) !== "csv"){
+            console.log(filename.substring(filename.length - 3, filename.length ));
+            alert(filename + " Is not valid file type");
+        }
+        alert(filename + " Submitted");
+        //console.log(filename);
+
+        // var xmlhttp = new XMLHttpRequest();
+        // xmlhttp.onreadystatechange = function() {
+        //     if (this.readyState == 4 && this.status == 200) {
+        //         document.getElementById("data").innerHTML = this.responseText;
+        //     }
+        // };
+        // xmlhttp.open("GET", "getData.php?filename=" + filename, true);
+        // xmlhttp.send();
     }
 
 

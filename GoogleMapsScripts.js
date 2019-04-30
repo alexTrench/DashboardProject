@@ -16,7 +16,12 @@ function initMap() {
         markers.push(marker);
         console.log(marker.getPosition());
     }
-
+    //this runs the first time to avoid some errors i was getting during testing with the charts not loading
+    //when the page loads
+    google.maps.event.addListenerOnce(map, 'idle', function(){
+        // do something only the first time the map is loaded
+        showVisibleMarkers(map, markers);
+    });
     // Fired when the map becomes idle after panning or zooming.
     google.maps.event.addListener(map, 'idle', function() {
 
@@ -44,7 +49,7 @@ function showVisibleMarkers(map, markers){
     drawGoogleMapsTemp(visibleMarkers);
     drawGoogleMapsHumidity(visibleMarkers);
     drawGoogleMapsLight(visibleMarkers);
-
+    flatComboChartUtilities(visibleMarkers);
     flatComboChartTemp(visibleMarkers);
 }
 
@@ -80,7 +85,7 @@ function drawGoogleMapsTemp(VisibleMarkers){
         vAxis: {
             viewWindow: {
                 min: 0,
-                max: 100,
+                max: 60,
             }
         },
         animation:{
@@ -267,13 +272,11 @@ function flatComboChartTemp(visibleMarkers){
     data.addColumn('string', 'Flat Number');
     data.addColumn('number', 'Temp');
     data.addColumn('number', 'Humidity');
-    data.addColumn('number', 'Gas Usage');
-    data.addColumn('number', 'Electricity Usage');
 
     //dont need style for this chart
     //data.addColumn({type:'string', role:'style'});
     for(let i = 0; i < visibleMarkers.length; i++) {
-        data.addRow([ visibleMarkers[i], (Math.random() * 80) + 30, (Math.random() * 80) + 30, (Math.random() * 80) + 30, (Math.random() * 80) + 30]);
+        data.addRow([ visibleMarkers[i], (Math.random() * 80) + 30, (Math.random() * 80) + 30]);
 
     }
 
@@ -281,15 +284,15 @@ function flatComboChartTemp(visibleMarkers){
 
     // Set chart options
     var options = {
-        'title': 'Combined Readings',
-        'width': 1000,
+        'title': 'Combined Atmospheric  Readings',
+        'width': 800,
         'height': 400,
         seriesType: 'bars',
         //start chart a 0, to give a more reliable chart look
         vAxis: {
             viewWindow: {
                 min: 0,
-                max: 200,
+                max: 100,
             }
         },
         animation:{
@@ -303,17 +306,71 @@ function flatComboChartTemp(visibleMarkers){
     var chart = new google.visualization.ComboChart(document.getElementById('chart_div7'));
     chart.draw(data, options);
 
-    let randNum;
 
     setInterval(function() {
 
         //set all of the values of the combo chart again to random values
         for(let u = 0; u < visibleMarkers.length; u++){
-            data.setValue(u, 1, 60 + (Math.random() * 80) + 30);
-            data.setValue(u, 2, 60 + (Math.random() * 80) + 30);
-            data.setValue(u, 3, 60 + (Math.random() * 80) + 30);
-            data.setValue(u, 4, 60 + (Math.random() * 80) + 30);
+            data.setValue(u, 1,(Math.random() * 30) + 10);
+            data.setValue(u, 2,(Math.random() * 60) + 30);
+        }
 
+        chart.draw(data, options);
+    }, 5000);
+
+
+}
+
+function flatComboChartUtilities(visibleMarkers){
+
+    let data = new google.visualization.DataTable();
+
+    let flats = ["Flat 11", "Flat 12","Flat 21","Flat 31","Flat 51","Flat 61"];
+    //console.log(VisibleMarkers);
+
+    data.addColumn('string', 'Flat Number');
+    data.addColumn('number', 'Gas Usage');
+    data.addColumn('number', 'Electricity Usage');
+
+    //dont need style for this chart
+    //data.addColumn({type:'string', role:'style'});
+    for(let i = 0; i < visibleMarkers.length; i++) {
+        data.addRow([ visibleMarkers[i], (Math.random() * 80) + 30, (Math.random() * 80) + 30]);
+
+    }
+
+
+
+    // Set chart options
+    var options = {
+        'title': 'Combined Utility Readings %',
+        'width': 800,
+        'height': 400,
+        seriesType: 'bars',
+        //start chart a 0, to give a more reliable chart look
+        vAxis: {
+            viewWindow: {
+                min: 0,
+                max: 110,
+            }
+        },
+        animation:{
+            startup: false,
+            duration: 1000,
+            easing: 'out',
+        },
+
+    };
+    // Instantiate and draw our chart, passing in some options.
+    var chart = new google.visualization.ComboChart(document.getElementById('chart_div8'));
+    chart.draw(data, options);
+
+    setInterval(function() {
+
+        //set all of the values of the combo chart again to random values
+        for(let u = 0; u < visibleMarkers.length; u++){
+            data.setValue(u, 1,(Math.random() * 100));
+            data.setValue(u, 2,(Math.random() * 100));
         }
 
 

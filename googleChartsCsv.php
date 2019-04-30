@@ -16,7 +16,7 @@
         }
 
         header {
-            background: #55d6aa;
+            background: #005f86;
         }
 
         header::after {
@@ -49,21 +49,22 @@
         }
 
         nav a {
-            color: #444;
+            color: #fff4f9;
             text-decoration: none;
             text-transform: uppercase;
             font-size: 14px;
         }
 
+
         nav a:hover {
-            color: #000;
+            color: #fff4f9;
         }
 
         nav a::before {
             content: '';
             display: block;
             height: 5px;
-            background-color: #444;
+            background-color: #fff4f9;
 
             position: absolute;
             top: 0;
@@ -134,6 +135,40 @@
             padding-left: 2%;
             padding-right: 2%;
         }
+        .collapsible {
+            background-color: rgba(255, 255, 255, 0);
+            color: #000000;
+            cursor: pointer;
+            padding: 18px;
+            width: 100%;
+            border: none;
+            text-align: center;
+            outline: none;
+            font-size: 25px;
+        }
+
+        .active, .collapsible:hover {
+            background-color: #dfdfdf;
+        }
+
+        .content {
+            padding: 0 18px;
+            display: none;
+            text-align: left;
+            overflow: hidden;
+            background-color: #f1f1f1;
+        }
+        #helpBox{
+            margin: auto;
+            width: 50%;
+            border: 3px solid #005f86;
+            padding: 10px;
+            text-align: center;
+        }
+        #dashboardDiv{
+            width: 80%;
+            float: left;
+        }
 
 
     </style>
@@ -147,8 +182,6 @@
     <!--<script src="jquery-csv.js"></script>-->
     <!--load controls and dasboard api from google charts-->
     <!--loads all of the graphs from other scripts-->
-
-    <script src="DrawChartFromJsonFile.js"></script>
     <script src="ReadFileName.js"></script>
     <script src="ReadCsvFile.js"></script>
     <script src="DrawCsvCharts.js"></script>
@@ -173,11 +206,23 @@
     </div>
 </header>
 
+<!--The help box which contains the instructions for how to use -->
+<div id="helpBox">
+    <button class="collapsible">Instructions</button>
+    <div class="content">
+        <p> 1: To draw charts based on historical data first import a CSV type file with the data required  </p>
+        <p> 2: The data is formated as such  / Sensor ID / buldax / Type of Data / Data Value / date and time /</p>
+        <p> 3: Once submitted press generate charts to view your data</p>
+        <p> 4: Currently to draw a new set of charts it is required to refresh this page before imporing a new file</p>
+        <p> Warning: Some charts remain empty if a file you entered does not have data relevant to that chart</p>
+    </div>
+</div>
+
 <!--Div that will hold the dashboard-->
-<div id="dashboard_div">
+<div id="dashboardDiv">
     <!--Divs that will hold each control and chart-->
     <form action="getData.php" method="POST" >
-        Select a file: <input type="file" name="fileName" id="fileName" accept=".csv"  required>
+        Select a file: <input type="file" name="fileName" id="fileName" accept=".csv" required onchange="ReadFileName()">
         <button id="btn3" type="button" class="btn btn-primary" value="importedFile" onclick="ConstructJsonObject()" >Generate Charts</button>
     </form>
 
@@ -259,4 +304,20 @@
 </div>
 
 </body>
+<script>
+    var coll = document.getElementsByClassName("collapsible");
+    var i;
+
+    for (i = 0; i < coll.length; i++) {
+        coll[i].addEventListener("click", function() {
+            this.classList.toggle("active");
+            var content = this.nextElementSibling;
+            if (content.style.display === "block") {
+                content.style.display = "none";
+            } else {
+                content.style.display = "block";
+            }
+        });
+    }
+</script>
 </html>

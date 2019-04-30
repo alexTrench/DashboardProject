@@ -15,13 +15,15 @@
         margin: 0 auto;
     }
 
-    .dashboardDiv{
-        width: 80%;
-        float: left;
+    #dashboardDiv{
+        display: -webkit-flex; /* Safari */
+        -webkit-flex-wrap: wrap; /* Safari 6.1+ */
+        display: flex;
+        flex-wrap: wrap;
     }
 
     header {
-        background: #55d6aa;
+        background: #005f86;
     }
 
     header::after {
@@ -54,21 +56,21 @@
     }
 
     nav a {
-        color: #444;
+        color: #fff4f9;
         text-decoration: none;
         text-transform: uppercase;
         font-size: 14px;
     }
 
     nav a:hover {
-        color: #000;
+        color: #fff4f9;
     }
 
     nav a::before {
         content: '';
         display: block;
         height: 5px;
-        background-color: #444;
+        background-color: #fff4f9;
 
         position: absolute;
         top: 0;
@@ -84,6 +86,57 @@
         height: 300px;  /* The height is 400 pixels */
         width: 100%;  /* The width is the width of the web page */
         padding-top: 30px;
+    }
+    #helpBox{
+        margin: auto;
+        width: 50%;
+        border: 3px solid #005f86;
+        padding: 10px;
+        text-align: center;
+    }
+    .collapsible {
+        background-color: rgba(255, 255, 255, 0);
+        color: #000000;
+        cursor: pointer;
+        padding: 18px;
+        width: 100%;
+        border: none;
+        text-align: center;
+        outline: none;
+        font-size: 25px;
+    }
+
+    .active, .collapsible:hover {
+        background-color: #dfdfdf;
+    }
+
+    .content {
+        padding: 0 18px;
+        display: none;
+        text-align: left;
+        overflow: hidden;
+        background-color: #f1f1f1;
+    }
+    #barCharts{
+        float: left;
+        padding: 2%;
+        flex-wrap: wrap;
+    }
+    #lineCharts{
+        float: left;
+        padding: 2%;
+        flex-wrap: wrap;
+    }
+    #ComboCharts{
+        float: left;
+        padding: 0.5%;
+        flex-wrap: wrap;
+    }
+    #allCharts{
+        display: -webkit-flex; /* Safari */
+        -webkit-flex-wrap: wrap; /* Safari 6.1+ */
+        display: flex;
+        flex-wrap: wrap;
     }
 
 
@@ -125,31 +178,37 @@
 
 <!--Google Maps Div-->
 <div id="map"></div>
+<div id="helpBox">
+    <button class="collapsible">Instructions</button>
+    <div class="content">
+        <p> 1: To draw some of the charts you must first drag the map to refresh visible properties  </p>
+        <p> 2: Line charts refresh at a set tick rate, they need time to fill</p>
+        <p> 3: You can use the map to filter what flats are shown on some of the charts, all you need to do is zoom in on some properties on the map so only the ones you want to view are in bounds</p>
+        <p> 4: "cannot read gettime" error just means the chart hasnt had time to populate with data and will do shortly</p>
+    </div>
+</div>
+
 
 <!--Div that will hold the dashboard-->
 <div id="dashboardDiv">
     <!--Divs that will hold each control and chart-->
-    <table class="columns">
-        <tr>
+    <table class="columns" id="allCharts">
+        <tr id="barCharts">
             <td><div id="chart_div1"></div></td>
             <td><div id="chart_div2"></div></td>
             <td><div id="chart_div3"></div></td>
+            <td><div id="chart_div10"></div></td>
         </tr>
-        <tr>
-
-        </tr>
-        <tr>
+    <tr id="ComboCharts">
             <td><div id="chart_div4"></div></td>
             <td><div id="chart_div5"></div></td>
             <td><div id="chart_div6"></div></td>
         </tr>
-        <tr>
+        <tr id="lineCharts">
             <td><div id="chart_div7"></div></td>
             <td><div id="chart_div8"></div></td>
             <td><div id="chart_div9"></div></td>
-
         </tr>
-
     </table>
 </div>
 
@@ -157,4 +216,21 @@
 
 </div>
 </body>
+
+<script>
+    var coll = document.getElementsByClassName("collapsible");
+    var i;
+
+    for (i = 0; i < coll.length; i++) {
+        coll[i].addEventListener("click", function() {
+            this.classList.toggle("active");
+            var content = this.nextElementSibling;
+            if (content.style.display === "block") {
+                content.style.display = "none";
+            } else {
+                content.style.display = "block";
+            }
+        });
+    }
+</script>
 </html>
